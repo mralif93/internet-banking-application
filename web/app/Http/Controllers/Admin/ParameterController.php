@@ -147,4 +147,91 @@ class ParameterController extends Controller
             'is_active' => $bank->is_active,
         ]);
     }
+
+    /**
+     * Dedicated JomPAY Biller Directory Management
+     */
+    public function jompay(Request $request)
+    {
+        $search = $request->query('search');
+        $category = $request->query('category');
+        $status = $request->query('status');
+
+        $query = JompayBiller::query();
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('biller_code', 'like', "%{$search}%")
+                  ->orWhere('biller_name', 'like', "%{$search}%")
+                  ->orWhere('ref_1_label', 'like', "%{$search}%");
+            });
+        }
+
+        if (!empty($category)) {
+            $query->where('category', $category);
+        }
+
+        if ($status === 'active') {
+            $query->where('is_active', true);
+        } elseif ($status === 'disabled') {
+            $query->where('is_active', false);
+        }
+
+        $billers = $query->orderBy('biller_code')->get();
+        $categories = JompayBiller::distinct()->pluck('category')->filter()->values();
+
+        $stats = [
+            'total' => JompayBiller::count(),
+            'active' => JompayBiller::where('is_active', true)->count(),
+            'disabled' => JompayBiller::where('is_active', false)->count(),
+            'categories_count' => $categories->count(),
+        ];
+
+        return view('admin.jompay', compact('billers', 'categories', 'stats', 'search', 'category', 'status'));
+    }
+
+    /**
+     * Dedicated PayNet Participating Banks Management
+     */
+    public function banks(Request $request)
+    {
+        $search = $request->query('search');
+        $rail = $request->query('rail');
+        $status = $request->query('status');
+
+        $query = \App\Models\Bank::query();
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('bank_code', 'like', "%{$search}%")
+                  ->orWhere('bank_name', 'like', "%{$search}%")
+                  ->orWhere('short_name', 'like', "%{$search}%")
+                  ->orWhere('swift_code', 'like', "%{$search}%");
+            });
+        }
+
+        if ($status === 'active') {
+            $query->where('is_active', true);
+        } elseif ($status === 'offline') {
+            $query->where('is_active', false);
+        }
+
+        if ($rail === 'duitnow') {
+            $query->where('is_duitnow_active', true);
+        } elseif ($rail === 'ibg') {
+            $query->where('is_ibg_active', true);
+        }
+
+        $banks = $query->orderBy('display_order')->orderBy('short_name')->get();
+
+        $stats = [
+            'total' => \App\Models\Bank::count(),
+            'active' => \App\Models\Bank::where('is_active', true)->count(),
+            'offline' => \App\Models\Bank::where('is_active', false)->count(),
+            'duitnow_active' => \App\Models\Bank::where('is_duitnow_active', true)->count(),
+            'ibg_active' => \App\Models\Bank::where('is_ibg_active', true)->count(),
+        ];
+
+        return view('admin.banks', compact('banks', 'stats', 'search', 'rail', 'status'));
+    }
 }

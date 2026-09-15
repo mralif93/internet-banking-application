@@ -98,6 +98,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/parameters/bank', [\App\Http\Controllers\Admin\ParameterController::class, 'storeBank'])->name('parameters.bank.store');
         Route::post('/parameters/bank/{id}/toggle', [\App\Http\Controllers\Admin\ParameterController::class, 'toggleBank'])->name('parameters.bank.toggle');
 
+        // Dedicated Gateway Operations: JomPAY Biller Directory & PayNet Banks
+        Route::get('/jompay', [\App\Http\Controllers\Admin\ParameterController::class, 'jompay'])->name('jompay');
+        Route::get('/banks', [\App\Http\Controllers\Admin\ParameterController::class, 'banks'])->name('banks');
+
         // Customer Account Controls
         Route::get('/customers', [\App\Http\Controllers\Admin\CustomerManagementController::class, 'index'])->name('customers');
         Route::post('/customers/{id}/toggle-status', [\App\Http\Controllers\Admin\CustomerManagementController::class, 'toggleStatus'])->name('customers.toggle-status');

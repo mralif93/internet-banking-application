@@ -374,22 +374,28 @@
                         </p>
                         <div class="space-y-1.5 text-xs">
                             <a
-                                href="{{ route('admin.parameters') }}#biller-directory-card"
-                                class="flex items-center justify-between px-3.5 py-2 rounded-2xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/70 transition-colors"
+                                href="{{ route('admin.jompay') }}"
+                                class="flex items-center justify-between px-3.5 py-2 rounded-2xl transition-colors {{ $activeNav === 'jompay' ? 'bg-rose-600 text-white font-bold shadow-xs' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/70' }}"
                             >
                                 <span class="flex items-center gap-2.5">
-                                    <i data-lucide="receipt" class="w-4 h-4 text-slate-400"></i>
+                                    <i data-lucide="receipt" class="w-4 h-4 {{ $activeNav === 'jompay' ? 'text-white' : 'text-slate-400' }}"></i>
                                     <span>JomPAY Directory</span>
                                 </span>
+                                @if($activeNav === 'jompay')
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                                @endif
                             </a>
                             <a
-                                href="{{ route('admin.parameters') }}#bank-directory-card"
-                                class="flex items-center justify-between px-3.5 py-2 rounded-2xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/70 transition-colors"
+                                href="{{ route('admin.banks') }}"
+                                class="flex items-center justify-between px-3.5 py-2 rounded-2xl transition-colors {{ $activeNav === 'banks' ? 'bg-rose-600 text-white font-bold shadow-xs' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/70' }}"
                             >
                                 <span class="flex items-center gap-2.5">
-                                    <i data-lucide="building-2" class="w-4 h-4 text-slate-400"></i>
+                                    <i data-lucide="building-2" class="w-4 h-4 {{ $activeNav === 'banks' ? 'text-white' : 'text-slate-400' }}"></i>
                                     <span>Member Banks</span>
                                 </span>
+                                @if($activeNav === 'banks')
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                                @endif
                             </a>
                         </div>
                     </div>
@@ -567,6 +573,28 @@
                         <span>Compliance Audit Trail</span>
                     </a>
 
+                    <div class="pt-2">
+                        <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-2 mb-1 font-mono">
+                            Gateway Operations
+                        </p>
+                        <a
+                            href="{{ route('admin.jompay') }}"
+                            onclick="window.toggleAdminDrawer()"
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl transition-all {{ $activeNav === 'jompay' ? 'bg-rose-600 text-white font-bold shadow-md shadow-rose-950/20 dark:shadow-rose-950' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white' }}"
+                        >
+                            <i data-lucide="receipt" class="w-4 h-4"></i>
+                            <span>JomPAY Directory</span>
+                        </a>
+                        <a
+                            href="{{ route('admin.banks') }}"
+                            onclick="window.toggleAdminDrawer()"
+                            class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl transition-all {{ $activeNav === 'banks' ? 'bg-rose-600 text-white font-bold shadow-md shadow-rose-950/20 dark:shadow-rose-950' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white' }}"
+                        >
+                            <i data-lucide="building-2" class="w-4 h-4"></i>
+                            <span>Member Banks</span>
+                        </a>
+                    </div>
+
                     <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
                         <a
                             href="{{ route('customer.dashboard') }}"
@@ -689,6 +717,14 @@
                     <a href="{{ route('admin.audit-logs') }}" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors">
                         <i data-lucide="file-check" class="w-4 h-4 text-rose-500"></i>
                         <span>WORM Compliance Audit Logs</span>
+                    </a>
+                    <a href="{{ route('admin.jompay') }}" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors">
+                        <i data-lucide="receipt" class="w-4 h-4 text-amber-500"></i>
+                        <span>JomPAY Biller Directory &amp; Validation Rules</span>
+                    </a>
+                    <a href="{{ route('admin.banks') }}" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors">
+                        <i data-lucide="building-2" class="w-4 h-4 text-emerald-500"></i>
+                        <span>PayNet Participating Banks Directory</span>
                     </a>
                     <a href="{{ route('customer.dashboard') }}" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-xl text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors">
                         <i data-lucide="external-link" class="w-4 h-4 text-emerald-500"></i>

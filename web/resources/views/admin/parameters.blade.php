@@ -17,13 +17,28 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-2">
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-2.5 flex-wrap">
+            <a
+                href="{{ route('admin.jompay') }}"
+                class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all shadow-2xs"
+            >
+                <i data-lucide="receipt" class="w-3.5 h-3.5 text-amber-500"></i>
+                <span>JomPAY Directory</span>
+            </a>
+            <a
+                href="{{ route('admin.banks') }}"
+                class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all shadow-2xs"
+            >
+                <i data-lucide="building-2" class="w-3.5 h-3.5 text-emerald-500"></i>
+                <span>Member Banks</span>
+            </a>
             <button
                 type="button"
                 onclick="window.submitParameterForm()"
-                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold shadow-sm shadow-rose-600/30 transition-all cursor-pointer active:scale-[0.98]"
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-all cursor-pointer shadow-sm shadow-rose-600/20"
             >
-                <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                <i data-lucide="save" class="w-4 h-4"></i>
                 <span>Save All Parameters</span>
             </button>
         </div>
@@ -259,14 +274,23 @@
                 </h2>
                 <p class="text-xs text-slate-500 dark:text-slate-400">Manage approved billers, categories and active validation rules.</p>
             </div>
-            <button
-                type="button"
-                onclick="window.openAddBillerModal()"
-                class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white text-xs font-bold transition-all cursor-pointer border border-slate-800 dark:border-slate-700 shadow-2xs"
-            >
-                <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-amber-400"></i>
-                <span>Register New Biller</span>
-            </button>
+            <div class="flex items-center gap-2">
+                <a
+                    href="{{ route('admin.jompay') }}"
+                    class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all shadow-2xs"
+                >
+                    <i data-lucide="external-link" class="w-3.5 h-3.5 text-amber-500"></i>
+                    <span>Open Dedicated Page</span>
+                </a>
+                <button
+                    type="button"
+                    onclick="window.openAddBillerModal()"
+                    class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white text-xs font-bold transition-all cursor-pointer border border-slate-800 dark:border-slate-700 shadow-2xs"
+                >
+                    <i data-lucide="plus-circle" class="w-3.5 h-3.5 text-amber-400"></i>
+                    <span>Register New Biller</span>
+                </button>
+            </div>
         </div>
 
         <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-xs">
@@ -330,14 +354,23 @@
                 </h2>
                 <p class="text-xs text-slate-500 dark:text-slate-400">Manage approved interbank routing destinations, SWIFT/BIC codes, and maintenance switches.</p>
             </div>
-            <button
-                type="button"
-                onclick="window.openAddBankModal()"
-                class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all cursor-pointer shadow-sm shadow-emerald-600/20"
-            >
-                <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
-                <span>Register New Bank</span>
-            </button>
+            <div class="flex items-center gap-2">
+                <a
+                    href="{{ route('admin.banks') }}"
+                    class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all shadow-2xs"
+                >
+                    <i data-lucide="external-link" class="w-3.5 h-3.5 text-emerald-500"></i>
+                    <span>Open Dedicated Page</span>
+                </a>
+                <button
+                    type="button"
+                    onclick="window.openAddBankModal()"
+                    class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all cursor-pointer shadow-sm shadow-emerald-600/20"
+                >
+                    <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                    <span>Register New Bank</span>
+                </button>
+            </div>
         </div>
 
         <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-xs">

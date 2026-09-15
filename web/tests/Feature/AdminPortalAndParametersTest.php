@@ -207,5 +207,38 @@ class AdminPortalAndParametersTest extends TestCase
         $bank->refresh();
         $this->assertTrue($bank->is_active);
     }
+
+    public function test_admin_can_access_dedicated_jompay_page(): void
+    {
+        $response = $this->get('/admin/jompay');
+        $response->assertStatus(200);
+        $response->assertSee('JomPAY Biller Directory');
+        $response->assertSee('PayNet National Invoicing Directory');
+        $response->assertSee('Register New Biller');
+    }
+
+    public function test_admin_can_filter_jompay_page(): void
+    {
+        $response = $this->get('/admin/jompay?search=5454&status=active');
+        $response->assertStatus(200);
+        $response->assertSee('JomPAY Biller Directory');
+    }
+
+    public function test_admin_can_access_dedicated_banks_page(): void
+    {
+        $response = $this->get('/admin/banks');
+        $response->assertStatus(200);
+        $response->assertSee('PayNet Participating Banks');
+        $response->assertSee('PayNet MEPS & Interbank Gateway');
+        $response->assertSee('Register New Bank');
+    }
+
+    public function test_admin_can_filter_banks_page(): void
+    {
+        $response = $this->get('/admin/banks?rail=duitnow&status=active');
+        $response->assertStatus(200);
+        $response->assertSee('PayNet Participating Banks');
+    }
 }
+
 
