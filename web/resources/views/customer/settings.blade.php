@@ -740,12 +740,20 @@ $customer = Auth::guard('customer')->user() ?? (object)[
                                 <i data-lucide="alert-octagon" class="w-4 h-4 text-rose-600"></i>
                                 <p class="text-xs font-black text-rose-700 dark:text-rose-300 uppercase tracking-wider">Danger Zone</p>
                             </div>
-                            <p class="text-xs text-rose-700 dark:text-rose-400 leading-relaxed">Account deactivation is irreversible. All linked services, auto-debits and DuitNow registrations will be cancelled. 30-day cooling period applies.</p>
-                            <button type="button" onclick="window.showAppConfirm({ title: 'Request Account Deactivation?', subtitle: 'Irreversible Banking Action', message: 'Are you sure you want to request deactivation? All linked auto-debits, recurring JomPAY bills, and DuitNow ID bindings will be permanently cancelled.', type: 'danger', confirmText: 'Submit Deactivation Request', cancelText: 'Keep Account Active', onConfirm: function() { window.showAppAlert({ title: 'Deactivation Request Received', subtitle: 'Case #BF-2026-9901', message: 'Your request has been logged. A BankFlow banking officer will verify your identity within 3 business days.', type: 'warning' }); } })"
-                                    class="w-full py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] shadow-md shadow-rose-600/25">
-                                <i data-lucide="user-x" class="w-4 h-4"></i>
-                                Request Account Deactivation
-                            </button>
+                            <p class="text-xs text-rose-700 dark:text-rose-400 leading-relaxed">Emergency Kill Switch immediately freezes all your bank accounts, debit cards, and revokes all active digital banking sessions across all devices.</p>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                                <button type="button" onclick="window.openKillSwitchModal()"
+                                        class="w-full py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98] shadow-md shadow-rose-600/25">
+                                    <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                                    Emergency Web Kill Switch
+                                </button>
+                                <button type="button" onclick="window.showAppConfirm({ title: 'Request Account Deactivation?', subtitle: 'Irreversible Banking Action', message: 'Are you sure you want to request deactivation? All linked auto-debits, recurring JomPAY bills, and DuitNow ID bindings will be permanently cancelled.', type: 'danger', confirmText: 'Submit Deactivation Request', cancelText: 'Keep Account Active', onConfirm: function() { window.showAppAlert({ title: 'Deactivation Request Received', subtitle: 'Case #BF-2026-9901', message: 'Your request has been logged. A BankFlow banking officer will verify your identity within 3 business days.', type: 'warning' }); } })"
+                                        class="w-full py-2.5 rounded-xl border border-rose-300 dark:border-rose-800 hover:bg-rose-100 dark:hover:bg-rose-900/40 text-rose-700 dark:text-rose-300 font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]">
+                                    <i data-lucide="user-x" class="w-4 h-4"></i>
+                                    Request Deactivation
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -835,6 +843,37 @@ $customer = Auth::guard('customer')->user() ?? (object)[
             <div class="flex gap-2.5 pt-1">
                 <button type="button" onclick="window.closeChangePin()" class="flex-1 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer font-sans transition-colors">Cancel</button>
                 <button type="button" onclick="window.closeChangePin(); window.showAppAlert({ title: 'PIN Updated', subtitle: 'Transaction Security', message: 'Your 6-digit transaction PIN has been successfully reset. A 12-hour cooling-off security lock is now active.', type: 'security' })" class="flex-1 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm cursor-pointer active:scale-95 shadow-xs shadow-emerald-600/20 font-sans transition-all">Update</button>
+            </div>
+        </div>
+    </div>
+
+    {{-- ══ EMERGENCY KILL SWITCH MODAL ══ --}}
+    <div id="kill-switch-modal" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" onclick="window.closeKillSwitchModal()"></div>
+        <div class="relative w-full sm:max-w-md bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl shadow-2xl border-t border-rose-300 dark:border-rose-900 sm:border p-5 sm:p-6 space-y-4 animate__animated animate__fadeInUp sm:animate__zoomIn animate__faster">
+            <div class="w-10 h-1 rounded-full bg-slate-200 dark:bg-slate-700 mx-auto mb-1 sm:hidden"></div>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 text-rose-600">
+                    <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                    <h3 class="text-base font-black text-slate-900 dark:text-slate-100 font-sans tracking-tight">Emergency Kill Switch</h3>
+                </div>
+                <button type="button" onclick="window.closeKillSwitchModal()" class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+            
+            <p class="text-xs text-rose-700 dark:text-rose-400 leading-relaxed font-sans">
+                Activating the Emergency Kill Switch will <strong>instantly freeze all your accounts and debit cards</strong> and invalidate all logged-in devices. Enter your password to authorize.
+            </p>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 font-sans tracking-tight">Enter Your Password</label>
+                    <input type="password" id="kill-switch-password-input" class="w-full py-2.5 sm:py-3 px-3.5 sm:px-4 text-xs sm:text-sm font-semibold rounded-2xl border border-rose-300 dark:border-rose-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 focus:outline-none text-slate-900 dark:text-slate-100 font-sans shadow-2xs transition-all placeholder:font-normal placeholder:text-slate-400" placeholder="Your current login password" />
+                </div>
+            </div>
+
+            <div class="flex gap-2.5 pt-1">
+                <button type="button" onclick="window.closeKillSwitchModal()" class="flex-1 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 font-bold text-xs sm:text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer font-sans transition-colors">Cancel</button>
+                <button type="button" id="btn-confirm-kill-switch" onclick="window.executeKillSwitch()" class="flex-1 py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs sm:text-sm cursor-pointer active:scale-95 shadow-md shadow-rose-600/30 font-sans transition-all">Freeze Accounts</button>
             </div>
         </div>
     </div>
@@ -1216,6 +1255,56 @@ $customer = Auth::guard('customer')->user() ?? (object)[
         })();
 
         // ─── Modals ─────────────────────────────────────────────────────
+        window.openKillSwitchModal = function() {
+            document.getElementById('kill-switch-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        };
+        window.closeKillSwitchModal = function() {
+            document.getElementById('kill-switch-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        };
+
+        window.executeKillSwitch = function() {
+            const pwd = (document.getElementById('kill-switch-password-input').value || '').trim();
+            if (!pwd) {
+                alert('Please enter your password to authorize lockdown.');
+                return;
+            }
+
+            const btn = document.getElementById('btn-confirm-kill-switch');
+            btn.innerHTML = 'Freezing...';
+            btn.disabled = true;
+
+            const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+
+            fetch('{{ route("customer.settings.kill-switch") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrf,
+                },
+                body: JSON.stringify({ password: pwd })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('EMERGENCY KILL SWITCH ACTIVATED: Your accounts and cards are now frozen.');
+                    window.location.href = data.redirect || '{{ route("login") }}';
+                } else {
+                    alert(data.message || 'Authorization failed.');
+                    btn.innerHTML = 'Freeze Accounts';
+                    btn.disabled = false;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('An error occurred. Please contact customer care.');
+                btn.innerHTML = 'Freeze Accounts';
+                btn.disabled = false;
+            });
+        };
+
         window.openChangePassword  = function() { document.getElementById('change-password-modal').classList.remove('hidden'); document.body.style.overflow='hidden'; };
         window.closeChangePassword = function() { document.getElementById('change-password-modal').classList.add('hidden');    document.body.style.overflow=''; };
         window.openChangePin       = function() { document.getElementById('change-pin-modal').classList.remove('hidden');     document.body.style.overflow='hidden'; };

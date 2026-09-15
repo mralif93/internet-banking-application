@@ -9,8 +9,35 @@ $customer = Auth::guard('customer')->user() ?? (object)[
     'phone_number' => '+60 12-345 6789',
 ];
 
-// Rich Transaction History Dataset
-$allTransactions = [
+// Rich Transaction History Dataset from database or fallback mock
+$allTransactions = isset($transactions) && $transactions->isNotEmpty() ? $transactions->map(function($t) {
+    $typeLabel = match($t->transaction_type) {
+        'duitnow_transfer' => 'DuitNow',
+        'jompay' => 'JomPAY Bill',
+        'qr_pay' => 'DuitNow QR',
+        'deposit' => 'Salary / Deposit',
+        default => ucfirst($t->transaction_type),
+    };
+    $typeKey = match($t->transaction_type) {
+        'duitnow_transfer' => 'duitnow',
+        'jompay' => 'jompay',
+        'qr_pay' => 'qr',
+        default => 'other',
+    };
+    return [
+        'id' => $t->reference_number,
+        'title' => $t->recipient_name ?? $t->description,
+        'type' => $typeKey,
+        'type_label' => $typeLabel,
+        'category' => $t->payment_reference ?? $t->description,
+        'amount' => number_format($t->amount, 2, '.', ''),
+        'is_credit' => $t->direction === 'credit',
+        'date' => $t->created_at->diffForHumans(),
+        'date_iso' => $t->created_at->format('Y-m-d'),
+        'status' => $t->status,
+        'reference' => $t->reference_number,
+    ];
+})->toArray() : [
     [
         'id' => 'RPP-20260909-082104',
         'title' => 'PETRONAS Dagangan Berhad',
@@ -58,10 +85,23 @@ $allTransactions = [
         'category' => 'Utility Payment (5454)',
         'amount' => '178.40',
         'is_credit' => false,
-        'date' => '05 Sep 2026, 4:20 PM',
-        'date_iso' => '2026-09-05',
+        'date' => 'Yesterday, 2:15 PM',
+        'date_iso' => '2026-09-13',
         'status' => 'completed',
         'reference' => 'JOM-5454-99210',
+    ],
+    [
+        'id' => 'SAL-20260901-0012',
+        'title' => 'Monthly Salary — PAYROLL TECH',
+        'type' => 'duitnow',
+        'type_label' => 'Direct Credit',
+        'category' => 'Salary Crediting',
+        'amount' => '8500.00',
+        'is_credit' => true,
+        'date' => '01 Sep 2026',
+        'date_iso' => '2026-09-01',
+        'status' => 'completed',
+        'reference' => 'SAL-20260901-0012',
     ],
     [
         'id' => 'PAYROLL-SAL-202608',

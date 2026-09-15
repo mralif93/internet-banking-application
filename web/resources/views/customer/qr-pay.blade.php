@@ -291,10 +291,38 @@ $customer = Auth::guard('customer')->user() ?? (object)[
             btn.innerHTML = `<span class="animate-spin mr-2">◌</span> Scanning Face ID & Signing with Secure Enclave...`;
             btn.disabled = true;
 
-            setTimeout(() => {
-                alert(`DuitNow QR Payment of RM ${currentMerchant.price} to ${currentMerchant.name} successful!`);
-                window.location.href = "{{ route('customer.dashboard') }}";
-            }, 1200);
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+
+            fetch('{{ route("customer.qr-pay.submit") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    merchant_name: currentMerchant.name,
+                    amount: parseFloat(currentMerchant.price),
+                    merchant_ref: currentMerchant.ref,
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`DuitNow QR Payment of RM ${parseFloat(data.amount).toFixed(2)} to ${data.merchant_name} successful! (Ref: ${data.reference})`);
+                    window.location.href = "{{ route('customer.history') }}";
+                } else {
+                    alert(data.message || 'QR Payment failed.');
+                    btn.innerHTML = `<span>Authorize Payment (RM ${currentMerchant.price})</span>`;
+                    btn.disabled = false;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('QR Payment failed due to a network error.');
+                btn.innerHTML = `<span>Authorize Payment (RM ${currentMerchant.price})</span>`;
+                btn.disabled = false;
+            });
         };
 
         window.updateReceiveQrAmount = function() {

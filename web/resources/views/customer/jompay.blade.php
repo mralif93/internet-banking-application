@@ -660,24 +660,51 @@ $customer = Auth::guard('customer')->user() ?? (object)[
             btn.innerHTML = `<span class="animate-spin mr-2">◌</span> Authorizing via Hardware Enclave...`;
             btn.disabled = true;
 
-            setTimeout(() => {
-                const now = new Date();
-                const ts = now.toLocaleDateString('en-MY', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + now.toLocaleTimeString('en-MY', { hour: '2-digit', minute: '2-digit' });
-                const ref = 'JOM-' + billerState.code + '-' + Math.floor(100000 + Math.random() * 900000);
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
 
-                document.getElementById('jompay-receipt-amount').textContent = 'RM ' + billerState.amount.toFixed(2);
-                document.getElementById('jompay-receipt-ref').textContent = ref;
-                document.getElementById('jompay-receipt-biller').textContent = billerState.name;
-                document.getElementById('jompay-receipt-code-ref').textContent = `${billerState.code} • ${billerState.ref1}`;
-                document.getElementById('jompay-receipt-time').textContent = ts;
+            fetch('{{ route("customer.jompay.submit") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    biller_code: billerState.code,
+                    ref_1: billerState.ref1,
+                    ref_2: billerState.ref2 || null,
+                    amount: billerState.amount,
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('jompay-receipt-amount').textContent = 'RM ' + parseFloat(data.amount).toFixed(2);
+                    document.getElementById('jompay-receipt-ref').textContent = data.reference;
+                    document.getElementById('jompay-receipt-biller').textContent = data.biller_name;
+                    document.getElementById('jompay-receipt-code-ref').textContent = `${data.biller_code} • ${data.ref_1}`;
+                    document.getElementById('jompay-receipt-time').textContent = data.date;
 
-                // Hide Accordion & Show Receipt
-                document.getElementById('jompay-accordion-container').classList.add('hidden');
-                document.getElementById('jompay-success-card').classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                    // Hide Accordion & Show Receipt
+                    document.getElementById('jompay-accordion-container').classList.add('hidden');
+                    document.getElementById('jompay-success-card').classList.remove('hidden');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
 
+                    if (window.lucide) window.lucide.createIcons();
+                } else {
+                    alert(data.message || 'Payment failed.');
+                    btn.innerHTML = `<i data-lucide="fingerprint" class="w-5 h-5"></i><span>Authorize &amp; Pay Bill</span>`;
+                    btn.disabled = false;
+                    if (window.lucide) window.lucide.createIcons();
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('JomPAY submission failed due to a network or server issue.');
+                btn.innerHTML = `<i data-lucide="fingerprint" class="w-5 h-5"></i><span>Authorize &amp; Pay Bill</span>`;
+                btn.disabled = false;
                 if (window.lucide) window.lucide.createIcons();
-            }, 1100);
+            });
         };
 
         window.resetJompayAccordion = function() {

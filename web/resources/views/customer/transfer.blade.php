@@ -241,88 +241,92 @@ $customer = Auth::guard('customer')->user() ?? (object)[
                                 <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-500"></i>
                                 <span>Quick Select Saved Payee</span>
                             </label>
-                            <span class="text-[11px] text-slate-400 font-medium hidden xs:inline">Tap to auto-fill</span>
+                            <div class="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    onclick="window.openAddPayeeModal()"
+                                    class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors cursor-pointer"
+                                >
+                                    <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                                    <span>Add Payee</span>
+                                </button>
+                                <span class="text-slate-300 dark:text-slate-700 hidden xs:inline">•</span>
+                                <span class="text-[11px] text-slate-400 font-medium hidden xs:inline">Tap to auto-fill</span>
+                            </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-2.5" id="saved-payee-list">
-                            <!-- Card 1: Sarah -->
-                            <button
-                                type="button"
-                                onclick="window.selectSavedPayee('Sarah Binti Zulkifli', '012-8821941', 'Mobile', 'Maybank', this)"
-                                class="saved-payee-btn active p-3 sm:p-3.5 pr-8 rounded-2xl border-2 border-emerald-500 bg-gradient-to-br from-emerald-50/90 via-emerald-50/40 to-white dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-900 text-left transition-all group cursor-pointer active:scale-[0.98] shadow-sm shadow-emerald-500/10 relative flex items-center gap-2.5"
-                            >
-                                <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                                    <div class="w-9 h-9 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-200 dark:from-emerald-950 dark:to-teal-900 text-emerald-700 dark:text-emerald-300 font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
-                                        SZ
+                            @if(isset($beneficiaries) && $beneficiaries->isNotEmpty())
+                                @foreach($beneficiaries as $index => $ben)
+                                    @php
+                                        $initials = strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', $ben->nickname), 0, 2)) ?: 'BF';
+                                        $proxyVal = $ben->duitnow_id_value ?: $ben->account_number;
+                                        $proxyType = $ben->duitnow_id_type ? ucfirst($ben->duitnow_id_type) : 'Account';
+                                    @endphp
+                                    <div class="relative group/card">
+                                        <button
+                                            type="button"
+                                            onclick="window.selectSavedPayee('{{ addslashes($ben->nickname) }}', '{{ $proxyVal }}', '{{ $proxyType }}', '{{ addslashes($ben->bank_name) }}', this)"
+                                            class="saved-payee-btn w-full {{ $index === 0 ? 'active' : '' }} p-3 sm:p-3.5 pr-8 rounded-2xl border {{ $index === 0 ? 'border-2 border-emerald-500 bg-gradient-to-br from-emerald-50/90 via-emerald-50/40 to-white dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-900' : 'border-slate-200/90 dark:border-slate-800 bg-white hover:bg-slate-50/80 dark:bg-slate-900 dark:hover:bg-slate-850 hover:border-slate-300 dark:hover:border-slate-700' }} text-left transition-all group cursor-pointer active:scale-[0.98] shadow-xs relative flex items-center gap-2.5"
+                                        >
+                                            <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                                                <div class="w-9 h-9 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-200 dark:from-emerald-950 dark:to-teal-900 text-emerald-700 dark:text-emerald-300 font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                                                    {{ $initials }}
+                                                </div>
+                                                <div class="min-w-0 flex-1">
+                                                    <div class="flex items-center gap-1">
+                                                        <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight truncate">{{ $ben->nickname }}</p>
+                                                        @if($ben->is_favorite)
+                                                            <i data-lucide="star" class="w-3 h-3 text-amber-400 fill-amber-400 shrink-0"></i>
+                                                        @endif
+                                                    </div>
+                                                    <span class="inline-block text-[11px] font-medium text-slate-400 mt-0.5 truncate">{{ $ben->bank_name }} • {{ $proxyVal }}</span>
+                                                </div>
+                                            </div>
+                                            <span class="saved-check-badge {{ $index === 0 ? '' : 'hidden' }} absolute top-2.5 right-2.5 w-4.5 h-4.5 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs ring-2 ring-white dark:ring-slate-900">
+                                                <i data-lucide="check" class="w-2.5 h-2.5 stroke-[3]"></i>
+                                            </span>
+                                        </button>
+                                        <div class="absolute bottom-1 right-2 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center gap-1 bg-white/90 dark:bg-slate-850/90 rounded-lg px-1 py-0.5 shadow-2xs z-10">
+                                            <button
+                                                type="button"
+                                                title="Toggle Favorite"
+                                                onclick="window.togglePayeeFavorite({{ $ben->id }}, event)"
+                                                class="text-slate-400 hover:text-amber-500 p-0.5 transition-colors"
+                                            >
+                                                <i data-lucide="star" class="w-3 h-3 {{ $ben->is_favorite ? 'text-amber-400 fill-amber-400' : '' }}"></i>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                title="Delete Payee"
+                                                onclick="window.deletePayee({{ $ben->id }}, event)"
+                                                class="text-slate-400 hover:text-rose-500 p-0.5 transition-colors"
+                                            >
+                                                <i data-lucide="trash-2" class="w-3 h-3"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="min-w-0 flex-1">
-                                        <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight truncate">Sarah Zulkifli</p>
-                                        <span class="inline-block text-[11px] font-medium text-slate-400 mt-0.5 truncate">Maybank • 012-8821941</span>
+                                @endforeach
+                            @else
+                                <!-- Card 1: Sarah -->
+                                <button
+                                    type="button"
+                                    onclick="window.selectSavedPayee('Sarah Binti Zulkifli', '012-8821941', 'Mobile', 'Maybank', this)"
+                                    class="saved-payee-btn active p-3 sm:p-3.5 pr-8 rounded-2xl border-2 border-emerald-500 bg-gradient-to-br from-emerald-50/90 via-emerald-50/40 to-white dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-900 text-left transition-all group cursor-pointer active:scale-[0.98] shadow-sm shadow-emerald-500/10 relative flex items-center gap-2.5"
+                                >
+                                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                                        <div class="w-9 h-9 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-200 dark:from-emerald-950 dark:to-teal-900 text-emerald-700 dark:text-emerald-300 font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                                            SZ
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight truncate">Sarah Zulkifli</p>
+                                            <span class="inline-block text-[11px] font-medium text-slate-400 mt-0.5 truncate">Maybank • 012-8821941</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <span class="saved-check-badge absolute top-2.5 right-2.5 w-4.5 h-4.5 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs ring-2 ring-white dark:ring-slate-900">
-                                    <i data-lucide="check" class="w-2.5 h-2.5 stroke-[3]"></i>
-                                </span>
-                            </button>
-
-                            <!-- Card 2: Lim Wei Seng -->
-                            <button
-                                type="button"
-                                onclick="window.selectSavedPayee('Lim Wei Seng', '016-3391029', 'Mobile', 'CIMB', this)"
-                                class="saved-payee-btn p-3 sm:p-3.5 pr-8 rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white hover:bg-slate-50/80 dark:bg-slate-900 dark:hover:bg-slate-850 hover:border-slate-300 dark:hover:border-slate-700 text-left transition-all group cursor-pointer active:scale-[0.98] shadow-xs relative flex items-center gap-2.5"
-                            >
-                                <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                                    <div class="w-9 h-9 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-200 dark:from-emerald-950 dark:to-teal-900 text-emerald-700 dark:text-emerald-300 font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
-                                        LW
-                                    </div>
-                                    <div class="min-w-0 flex-1">
-                                        <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight truncate">Lim Wei Seng</p>
-                                        <span class="inline-block text-[11px] font-medium text-slate-400 mt-0.5 truncate">CIMB Bank • 016-3391029</span>
-                                    </div>
-                                </div>
-                                <span class="saved-check-badge hidden absolute top-2.5 right-2.5 w-4.5 h-4.5 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs ring-2 ring-white dark:ring-slate-900">
-                                    <i data-lucide="check" class="w-2.5 h-2.5 stroke-[3]"></i>
-                                </span>
-                            </button>
-
-                            <!-- Card 3: Hafiz Razak -->
-                            <button
-                                type="button"
-                                onclick="window.selectSavedPayee('Muhammad Hafiz', '940512-10-5541', 'NRIC', 'Public Bank', this)"
-                                class="saved-payee-btn p-3 sm:p-3.5 pr-8 rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white hover:bg-slate-50/80 dark:bg-slate-900 dark:hover:bg-slate-850 hover:border-slate-300 dark:hover:border-slate-700 text-left transition-all group cursor-pointer active:scale-[0.98] shadow-xs relative flex items-center gap-2.5"
-                            >
-                                <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                                    <div class="w-9 h-9 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-200 dark:from-emerald-950 dark:to-teal-900 text-emerald-700 dark:text-emerald-300 font-bold text-xs flex items-center justify-center shadow-2xs">
-                                        MH
-                                    </div>
-                                    <div class="min-w-0 flex-1">
-                                        <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight truncate">Hafiz Razak</p>
-                                        <span class="inline-block text-[11px] font-medium text-slate-400 mt-0.5 truncate">Public Bank • NRIC</span>
-                                    </div>
-                                </div>
-                                <span class="saved-check-badge hidden absolute top-2.5 right-2.5 w-4.5 h-4.5 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs ring-2 ring-white dark:ring-slate-900">
-                                    <i data-lucide="check" class="w-2.5 h-2.5 stroke-[3]"></i>
-                                </span>
-                            </button>
-
-                            <!-- Card 4: Siti Aminah -->
-                            <button
-                                type="button"
-                                onclick="window.selectSavedPayee('Siti Aminah', '1140 9928 1029', 'Account', 'RHB Bank', this)"
-                                class="saved-payee-btn p-3 sm:p-3.5 pr-8 rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white hover:bg-slate-50/80 dark:bg-slate-900 dark:hover:bg-slate-850 hover:border-slate-300 dark:hover:border-slate-700 text-left transition-all group cursor-pointer active:scale-[0.98] shadow-xs relative flex items-center gap-2.5"
-                            >
-                                <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                                    <div class="w-9 h-9 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-200 dark:from-emerald-950 dark:to-teal-900 text-emerald-700 dark:text-emerald-300 font-bold text-xs flex items-center justify-center shadow-2xs">
-                                        SA
-                                    </div>
-                                    <div class="min-w-0 flex-1">
-                                        <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight truncate">Siti Aminah</p>
-                                        <span class="inline-block text-[11px] font-medium text-slate-400 mt-0.5 truncate">RHB Bank • Acc</span>
-                                    </div>
-                                </div>
-                                <span class="saved-check-badge hidden absolute top-2.5 right-2.5 w-4.5 h-4.5 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs ring-2 ring-white dark:ring-slate-900">
-                                    <i data-lucide="check" class="w-2.5 h-2.5 stroke-[3]"></i>
-                                </span>
-                            </button>
+                                    <span class="saved-check-badge absolute top-2.5 right-2.5 w-4.5 h-4.5 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs ring-2 ring-white dark:ring-slate-900">
+                                        <i data-lucide="check" class="w-2.5 h-2.5 stroke-[3]"></i>
+                                    </span>
+                                </button>
+                            @endif
                         </div>
                     </div>
 
@@ -877,28 +881,163 @@ $customer = Auth::guard('customer')->user() ?? (object)[
             btn.innerHTML = `<span class="animate-spin mr-2">◌</span> Validating Hardware Enclave Face ID...`;
             btn.disabled = true;
 
-            setTimeout(() => {
-                const now = new Date();
-                const ts = now.toLocaleDateString('en-MY', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + now.toLocaleTimeString('en-MY', { hour: '2-digit', minute: '2-digit' });
-                const randomRef = 'RPP-' + now.getFullYear() + (now.getMonth() + 1).toString().padStart(2, '0') + now.getDate().toString().padStart(2, '0') + '-' + Math.floor(100000 + Math.random() * 900000);
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
 
-                document.getElementById('receipt-amount').textContent = 'RM ' + transferData.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                document.getElementById('receipt-ref-no').textContent = randomRef;
-                document.getElementById('receipt-recipient-name').textContent = transferData.recipientName;
-                document.getElementById('receipt-recipient-proxy').textContent = transferData.recipientDetail;
-                document.getElementById('receipt-reference').textContent = transferData.reference;
-                document.getElementById('receipt-timestamp').textContent = ts;
+            fetch('{{ route("customer.transfer.submit") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    amount: transferData.amount,
+                    recipient_name: transferData.recipientName,
+                    recipient_bank: transferData.recipientBank || 'PayNet Interbank',
+                    recipient_account: transferData.recipientAccount || transferData.recipientDetail,
+                    payment_reference: transferData.reference || 'DuitNow Transfer',
+                    is_trusted_payee: true,
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('receipt-amount').textContent = 'RM ' + parseFloat(data.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    document.getElementById('receipt-ref-no').textContent = data.reference;
+                    document.getElementById('receipt-recipient-name').textContent = data.recipient_name;
+                    document.getElementById('receipt-recipient-proxy').textContent = transferData.recipientDetail;
+                    document.getElementById('receipt-reference').textContent = transferData.reference;
+                    document.getElementById('receipt-timestamp').textContent = data.date;
 
-                // Hide accordion, show receipt
-                document.getElementById('transfer-accordion-container').classList.add('hidden');
-                document.getElementById('transfer-success-card').classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                if (window.lucide) window.lucide.createIcons();
-            }, 1000);
+                    // Hide accordion, show receipt
+                    document.getElementById('transfer-accordion-container').classList.add('hidden');
+                    document.getElementById('transfer-success-card').classList.remove('hidden');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    if (window.lucide) window.lucide.createIcons();
+                } else {
+                    alert(data.message || 'Transfer could not be completed.');
+                    btn.innerHTML = `<span>Authorize &amp; Transfer</span>`;
+                    btn.disabled = false;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Transfer submission encountered a network error. Please try again.');
+                btn.innerHTML = `<span>Authorize &amp; Transfer</span>`;
+                btn.disabled = false;
+            });
         };
 
         window.resetAccordionTransfer = function() {
             window.location.reload();
+        };
+
+        // Payee Management Handlers
+        window.openAddPayeeModal = function() {
+            document.getElementById('add-payee-modal').classList.remove('hidden');
+        };
+
+        window.closeAddPayeeModal = function() {
+            document.getElementById('add-payee-modal').classList.add('hidden');
+            document.getElementById('add-payee-form').reset();
+        };
+
+        window.submitAddPayee = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('save-payee-btn');
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Saving...`;
+            if (window.lucide) window.lucide.createIcons();
+
+            const nickname = document.getElementById('new-payee-nickname').value;
+            const bankName = document.getElementById('new-payee-bank').value;
+            const type = document.getElementById('new-payee-type').value;
+            const value = document.getElementById('new-payee-val').value;
+            const isFavorite = document.getElementById('new-payee-fav').checked;
+
+            const payload = {
+                nickname: nickname,
+                bank_name: bankName,
+                is_favorite: isFavorite,
+            };
+
+            if (type === 'account') {
+                payload.account_number = value;
+            } else {
+                payload.duitnow_id_type = type;
+                payload.duitnow_id_value = value;
+            }
+
+            fetch('{{ route('customer.beneficiaries.store') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify(payload),
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.showAppAlert({
+                        title: 'Payee Added',
+                        subtitle: 'DuitNow Directory',
+                        message: `${nickname} has been saved to your favorite payees list.`,
+                        type: 'success'
+                    });
+                    setTimeout(() => window.location.reload(), 1000);
+                } else {
+                    alert(data.message || 'Failed to save payee.');
+                    btn.disabled = false;
+                    btn.innerHTML = `<span>Save Payee</span>`;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('An error occurred while saving payee.');
+                btn.disabled = false;
+                btn.innerHTML = `<span>Save Payee</span>`;
+            });
+        };
+
+        window.togglePayeeFavorite = function(payeeId, event) {
+            event.stopPropagation();
+            fetch(`/customer/beneficiaries/${payeeId}/favorite`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                }
+            });
+        };
+
+        window.deletePayee = function(payeeId, event) {
+            event.stopPropagation();
+            if (!confirm('Are you sure you want to remove this payee from your saved list?')) {
+                return;
+            }
+            fetch(`/customer/beneficiaries/${payeeId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                }
+            });
         };
 
         // Wire up change listener for bank-select
@@ -912,5 +1051,75 @@ $customer = Auth::guard('customer')->user() ?? (object)[
         });
     })();
     </script>
+
+    <!-- Add Payee Modal -->
+    <div id="add-payee-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs hidden animate__animated animate__fadeIn animate__faster">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl max-w-md w-full p-5 sm:p-6 space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                        <i data-lucide="user-plus" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100">Add Saved Payee</h3>
+                        <p class="text-[11px] text-slate-400">Save for instant transfers &amp; DuitNow</p>
+                    </div>
+                </div>
+                <button type="button" onclick="window.closeAddPayeeModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <form id="add-payee-form" onsubmit="window.submitAddPayee(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Payee Nickname / Name</label>
+                    <input type="text" id="new-payee-nickname" required placeholder="e.g. Sarah Zulkifli" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-emerald-500 font-medium">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Bank Name</label>
+                    <select id="new-payee-bank" required class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-emerald-500 font-medium">
+                        <option value="Maybank (Malayan Banking Berhad)">Maybank (Malayan Banking Berhad)</option>
+                        <option value="CIMB Bank Berhad">CIMB Bank Berhad</option>
+                        <option value="Public Bank Berhad">Public Bank Berhad</option>
+                        <option value="RHB Bank Berhad">RHB Bank Berhad</option>
+                        <option value="Hong Leong Bank">Hong Leong Bank</option>
+                        <option value="Bank Islam Malaysia Berhad">Bank Islam Malaysia Berhad</option>
+                        <option value="AmBank (M) Berhad">AmBank (M) Berhad</option>
+                        <option value="BankFlow MY (Internal Transfer)">BankFlow MY (Internal Transfer)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Identifier Type</label>
+                    <select id="new-payee-type" required class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-emerald-500 font-medium">
+                        <option value="account">Account Number</option>
+                        <option value="mobile">DuitNow Mobile Number</option>
+                        <option value="nric">NRIC / MyKad</option>
+                        <option value="passport">Passport Number</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Account Number / DuitNow ID</label>
+                    <input type="text" id="new-payee-val" required placeholder="e.g. 114012345678 or 0123456789" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-emerald-500 font-mono">
+                </div>
+
+                <div class="flex items-center gap-2 pt-1">
+                    <input type="checkbox" id="new-payee-fav" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                    <label for="new-payee-fav" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Mark as favorite payee (pin to front)</label>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+                    <button type="button" onclick="window.closeAddPayeeModal()" class="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+                        Cancel
+                    </button>
+                    <button type="submit" id="save-payee-btn" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-xs shadow-emerald-600/25 transition-all cursor-pointer">
+                        Save Payee
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </x-layout.customer>

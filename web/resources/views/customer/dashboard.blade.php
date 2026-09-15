@@ -266,60 +266,90 @@ $customer = Auth::guard('customer')->user() ?? (object)[
                 </div>
 
                 <div class="divide-y divide-slate-100 dark:divide-slate-800/60" id="transaction-items-list">
-                    <x-banking.transaction-item
-                        title="PETRONAS Dagangan Berhad"
-                        category="DuitNow QR"
-                        type="qr"
-                        amount="85.00"
-                        :isCredit="false"
-                        date="Today, 1:15 PM"
-                        status="completed"
-                        reference="RPP-20260909-082104"
-                    />
+                    @if(isset($recentTransactions) && $recentTransactions->isNotEmpty())
+                        @foreach($recentTransactions as $tx)
+                            @php
+                                $typeKey = match($tx->transaction_type) {
+                                    'duitnow_transfer' => 'duitnow',
+                                    'jompay' => 'jompay',
+                                    'qr_pay' => 'qr',
+                                    default => 'other',
+                                };
+                                $categoryLabel = match($tx->transaction_type) {
+                                    'duitnow_transfer' => 'DuitNow',
+                                    'jompay' => 'JomPAY Bill',
+                                    'qr_pay' => 'DuitNow QR',
+                                    'deposit' => 'Direct Credit',
+                                    default => ucfirst($tx->transaction_type),
+                                };
+                            @endphp
+                            <x-banking.transaction-item
+                                :title="$tx->recipient_name ?? $tx->description"
+                                :category="$tx->payment_reference ?? $categoryLabel"
+                                :type="$typeKey"
+                                :amount="number_format($tx->amount, 2, '.', '')"
+                                :isCredit="$tx->direction === 'credit'"
+                                :date="$tx->created_at->diffForHumans()"
+                                :status="$tx->status"
+                                :reference="$tx->reference_number"
+                            />
+                        @endforeach
+                    @else
+                        <x-banking.transaction-item
+                            title="PETRONAS Dagangan Berhad"
+                            category="DuitNow QR"
+                            type="qr"
+                            amount="85.00"
+                            :isCredit="false"
+                            date="Today, 1:15 PM"
+                            status="completed"
+                            reference="RPP-20260909-082104"
+                        />
 
-                    <x-banking.transaction-item
-                        title="Transfer from Sarah Binti Zulkifli"
-                        category="DuitNow"
-                        type="duitnow"
-                        amount="450.00"
-                        :isCredit="true"
-                        date="Today, 10:30 AM"
-                        status="completed"
-                        reference="DN-MY-9921048821"
-                    />
+                        <x-banking.transaction-item
+                            title="Transfer from Sarah Binti Zulkifli"
+                            category="DuitNow"
+                            type="duitnow"
+                            amount="450.00"
+                            :isCredit="true"
+                            date="Today, 10:30 AM"
+                            status="completed"
+                            reference="DN-MY-9921048821"
+                        />
 
-                    <x-banking.transaction-item
-                        title="New Payee: Lim Wei Seng"
-                        category="DuitNow Instant"
-                        type="duitnow"
-                        amount="1200.00"
-                        :isCredit="false"
-                        date="Yesterday, 8:45 PM"
-                        status="cooling_off"
-                        reference="COOL-HOLD-992184"
-                    />
+                        <x-banking.transaction-item
+                            title="New Payee: Lim Wei Seng"
+                            category="DuitNow Instant"
+                            type="duitnow"
+                            amount="1200.00"
+                            :isCredit="false"
+                            date="Yesterday, 8:45 PM"
+                            status="cooling_off"
+                            reference="COOL-HOLD-992184"
+                        />
 
-                    <x-banking.transaction-item
-                        title="Tenaga Nasional Berhad"
-                        category="JomPAY Bill"
-                        type="jompay"
-                        amount="178.40"
-                        :isCredit="false"
-                        date="05 Sep 2026, 4:20 PM"
-                        status="completed"
-                        reference="JOM-5454-99210"
-                    />
+                        <x-banking.transaction-item
+                            title="Tenaga Nasional Berhad"
+                            category="JomPAY Bill"
+                            type="jompay"
+                            amount="178.40"
+                            :isCredit="false"
+                            date="05 Sep 2026, 4:20 PM"
+                            status="completed"
+                            reference="JOM-5454-99210"
+                        />
 
-                    <x-banking.transaction-item
-                        title="Salary Crediting: TECHSOL CORP"
-                        category="Direct Credit"
-                        type="fpx"
-                        amount="8500.00"
-                        :isCredit="true"
-                        date="28 Aug 2026, 12:05 AM"
-                        status="completed"
-                        reference="PAYROLL-SAL-202608"
-                    />
+                        <x-banking.transaction-item
+                            title="Salary Crediting: TECHSOL CORP"
+                            category="Direct Credit"
+                            type="fpx"
+                            amount="8500.00"
+                            :isCredit="true"
+                            date="28 Aug 2026, 12:05 AM"
+                            status="completed"
+                            reference="SAL-20260828-9901"
+                        />
+                    @endif
                 </div>
 
                 <!-- Link to Dedicated Full Transaction History Page -->

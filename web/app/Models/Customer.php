@@ -59,4 +59,39 @@ class Customer extends Authenticatable
             'account_balance' => 'decimal:2',
         ];
     }
+
+    public function accounts()
+    {
+        return $this->hasMany(Account::class);
+    }
+
+    public function primaryAccount()
+    {
+        return $this->hasOne(Account::class)->latestOfMany();
+    }
+
+    public function transactions()
+    {
+        return $this->hasManyThrough(Transaction::class, Account::class);
+    }
+
+    public function beneficiaries()
+    {
+        return $this->hasMany(Beneficiary::class);
+    }
+
+    public function limits()
+    {
+        return $this->hasMany(TransactionLimit::class);
+    }
+
+    public function cards()
+    {
+        return $this->hasMany(Card::class);
+    }
+
+    public function auditLogs()
+    {
+        return $this->hasMany(AuditLog::class);
+    }
 }

@@ -91,11 +91,11 @@ $customer = Auth::guard('customer')->user() ?? (object)[
                             onchange="window.updatePageStatement()"
                             class="w-full py-2 pl-3 pr-8 text-xs rounded-xl border border-slate-200/80 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 hover:bg-slate-100/70 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold focus:ring-1.5 focus:ring-emerald-500/30 focus:border-emerald-500 focus:outline-none appearance-none cursor-pointer transition-colors"
                         >
-                            <option value="aug2026">August 2026 (01 Aug - 31 Aug)</option>
-                            <option value="jul2026">July 2026 (01 Jul - 31 Jul)</option>
-                            <option value="jun2026">June 2026 (01 Jun - 30 Jun)</option>
-                            <option value="may2026">May 2026 (01 May - 31 May)</option>
-                            <option value="ytd2026">Year-to-Date 2026 (Jan - Aug)</option>
+                            <option value="2026-09" {{ ($year ?? 2026) == 2026 && ($month ?? 9) == 9 ? 'selected' : '' }}>September 2026 (Current Cycle)</option>
+                            <option value="2026-08" {{ ($year ?? 2026) == 2026 && ($month ?? 9) == 8 ? 'selected' : '' }}>August 2026 (01 Aug - 31 Aug)</option>
+                            <option value="2026-07" {{ ($year ?? 2026) == 2026 && ($month ?? 9) == 7 ? 'selected' : '' }}>July 2026 (01 Jul - 31 Jul)</option>
+                            <option value="2026-06" {{ ($year ?? 2026) == 2026 && ($month ?? 9) == 6 ? 'selected' : '' }}>June 2026 (01 Jun - 30 Jun)</option>
+                            <option value="2026-05" {{ ($year ?? 2026) == 2026 && ($month ?? 9) == 5 ? 'selected' : '' }}>May 2026 (01 May - 31 May)</option>
                         </select>
                         <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                     </div>
@@ -120,7 +120,7 @@ $customer = Auth::guard('customer')->user() ?? (object)[
             <div class="grid grid-cols-2 sm:flex sm:items-center sm:justify-end gap-2 pt-2.5 border-t border-slate-100 dark:border-slate-800">
                 <button
                     type="button"
-                    onclick="window.print()"
+                    onclick="window.printStatement()"
                     class="w-full sm:w-auto px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
                 >
                     <i data-lucide="printer" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
@@ -129,11 +129,11 @@ $customer = Auth::guard('customer')->user() ?? (object)[
 
                 <button
                     type="button"
-                    onclick="window.showAppAlert({ title: 'e-Statement Exported', subtitle: 'Cryptographically Signed PDF', message: 'Your monthly statement with SHA-256 digital signature has been downloaded.', type: 'success' });"
+                    onclick="window.downloadStatement()"
                     class="w-full sm:w-auto px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-xs shadow-emerald-600/25 transition-all cursor-pointer active:scale-[0.98]"
                 >
                     <i data-lucide="download" class="w-3.5 h-3.5 shrink-0"></i>
-                    <span class="truncate">Download PDF</span>
+                    <span class="truncate">Download e-Statement</span>
                 </button>
             </div>
         </div>
@@ -166,13 +166,13 @@ $customer = Auth::guard('customer')->user() ?? (object)[
                 <div class="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 space-y-1 shadow-2xs">
                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Account Holder Details</span>
                     <p class="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">{{ $customer->name }}</p>
-                    <p class="text-slate-500 font-mono text-[11px]" id="stmt-disp-account">{{ $customer->account_type }}: {{ $customer->account_number }}</p>
+                    <p class="text-slate-500 font-mono text-[11px]" id="stmt-disp-account">{{ $account->account_name ?? $customer->account_type }}: {{ $account->account_number ?? $customer->account_number }}</p>
                     <p class="text-slate-400 text-[10px] pt-0.5">Registered Phone: {{ $customer->phone_number }}</p>
                 </div>
 
                 <div class="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 space-y-1 sm:text-right shadow-2xs">
                     <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Statement Period</span>
-                    <p class="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm" id="stmt-disp-period">01 Aug 2026 - 31 Aug 2026</p>
+                    <p class="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm" id="stmt-disp-period">{{ $statement['month_name'] ?? 'September 2026' }}</p>
                     <p class="text-slate-500 text-[11px]">Currency: Malaysian Ringgit (MYR)</p>
                     <p class="text-emerald-600 dark:text-emerald-400 font-bold text-[10px] pt-0.5">PIDM Protected up to RM250,000</p>
                 </div>
@@ -188,7 +188,7 @@ $customer = Auth::guard('customer')->user() ?? (object)[
                         </div>
                         <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Opening Balance</span>
                     </div>
-                    <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 sm:mt-2 font-mono">RM 19,450.00</p>
+                    <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 sm:mt-2 font-mono">RM {{ number_format($statement['opening_balance'] ?? 19450.00, 2) }}</p>
                 </div>
 
                 <!-- Total Credits -->
@@ -199,7 +199,7 @@ $customer = Auth::guard('customer')->user() ?? (object)[
                         </div>
                         <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Credits</span>
                     </div>
-                    <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 sm:mt-2 font-mono">+RM 8,950.00</p>
+                    <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 sm:mt-2 font-mono">+RM {{ number_format($statement['total_credits'] ?? 8950.00, 2) }}</p>
                 </div>
 
                 <!-- Closing Balance -->
@@ -210,7 +210,7 @@ $customer = Auth::guard('customer')->user() ?? (object)[
                         </div>
                         <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Closing Balance</span>
                     </div>
-                    <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 sm:mt-2 font-mono">RM 24,850.50</p>
+                    <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 sm:mt-2 font-mono">RM {{ number_format($statement['closing_balance'] ?? 24850.50, 2) }}</p>
                 </div>
             </div>
 
@@ -221,10 +221,36 @@ $customer = Auth::guard('customer')->user() ?? (object)[
                         <i data-lucide="receipt" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
                         <span class="text-xs font-bold text-slate-900 dark:text-slate-100">Transaction Entries</span>
                     </div>
-                    <span class="text-[10px] font-mono text-slate-400">4 records</span>
+                    <span class="text-[10px] font-mono text-slate-400">{{ isset($statement['transactions']) ? $statement['transactions']->count() : 4 }} records</span>
                 </div>
 
                 <div class="divide-y divide-slate-100 dark:divide-slate-800/70 px-3 sm:px-4">
+                    @if(isset($statement['transactions']) && $statement['transactions']->isNotEmpty())
+                        @foreach($statement['transactions'] as $stTx)
+                            <div class="py-3 sm:py-3.5 flex items-center justify-between gap-3 hover:bg-slate-50/70 dark:hover:bg-slate-800/40 px-1 sm:px-2 rounded-xl transition-colors">
+                                <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0 flex-1">
+                                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 {{ $stTx->direction === 'credit' ? 'bg-emerald-50 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' : 'bg-slate-100/90 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700/60' }} shadow-2xs">
+                                        <i data-lucide="{{ $stTx->direction === 'credit' ? 'arrow-down-left' : 'arrow-up-right' }}" class="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[2.5] {{ $stTx->direction === 'credit' ? 'text-emerald-600' : 'text-rose-500' }}"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                                            <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 leading-snug break-words">{{ $stTx->recipient_name ?? $stTx->description }}</p>
+                                            <span class="text-[9px] sm:text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-md border shrink-0 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-700">{{ $stTx->reference_number }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-1.5 text-[10px] sm:text-[11px] text-slate-400 dark:text-slate-500 mt-1 flex-wrap">
+                                            <span class="text-[9px] sm:text-[10px] font-extrabold px-1.5 py-0.5 rounded-md border shrink-0 bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border-purple-200/60 dark:border-purple-900/50">{{ ucfirst(str_replace('_', ' ', $stTx->transaction_type)) }}</span>
+                                            <span class="text-slate-300 dark:text-slate-700">•</span>
+                                            <span>{{ $stTx->created_at->format('d M Y, h:i A') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-right shrink-0 pl-2">
+                                    <p class="text-xs sm:text-sm font-black {{ $stTx->direction === 'credit' ? 'text-emerald-600' : 'text-rose-600' }} font-mono tracking-tight">{{ $stTx->direction === 'credit' ? '+' : '-' }}RM {{ number_format($stTx->amount, 2) }}</p>
+                                    <p class="text-[10px] sm:text-[11px] font-mono text-slate-400 mt-0.5">Bal: <span class="font-bold text-slate-700 dark:text-slate-300">RM {{ number_format($stTx->balance_after, 2) }}</span></p>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
                     <!-- Tx 1: PETRONAS -->
                     <div class="py-3 sm:py-3.5 flex items-center justify-between gap-3 hover:bg-slate-50/70 dark:hover:bg-slate-800/40 px-1 sm:px-2 rounded-xl transition-colors">
                         <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0 flex-1">
@@ -322,6 +348,7 @@ $customer = Auth::guard('customer')->user() ?? (object)[
                             <p class="text-[10px] sm:text-[11px] font-mono text-slate-400 mt-0.5">Bal: <span class="font-bold text-slate-700 dark:text-slate-300">RM 24,663.90</span></p>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
 
@@ -341,10 +368,42 @@ $customer = Auth::guard('customer')->user() ?? (object)[
     <script>
     (function() {
         window.updatePageStatement = function() {
-            const acc = document.getElementById('stmt-page-account');
-            const period = document.getElementById('stmt-page-period');
-            document.getElementById('stmt-disp-account').textContent = acc.options[acc.selectedIndex].text;
-            document.getElementById('stmt-disp-period').textContent = period.options[period.selectedIndex].text;
+            const periodVal = document.getElementById('stmt-page-period').value;
+            if (periodVal) {
+                const parts = periodVal.split('-');
+                const year = parts[0];
+                const month = parts[1];
+                window.location.href = `{{ route('customer.statement') }}?year=${year}&month=${month}`;
+            }
+        };
+
+        window.downloadStatement = function() {
+            const periodVal = document.getElementById('stmt-page-period').value;
+            const format = document.getElementById('stmt-page-format').value;
+            let year = 2026, month = 9;
+            if (periodVal) {
+                const parts = periodVal.split('-');
+                year = parts[0];
+                month = parts[1];
+            }
+
+            if (format === 'csv') {
+                window.location.href = `{{ route('customer.statement.export') }}?year=${year}&month=${month}&format=csv`;
+            } else {
+                // Open official print / PDF certified certificate view
+                window.open(`{{ route('customer.statement.export') }}?year=${year}&month=${month}&format=pdf&autoprint=1`, '_blank');
+            }
+        };
+
+        window.printStatement = function() {
+            const periodVal = document.getElementById('stmt-page-period').value;
+            let year = 2026, month = 9;
+            if (periodVal) {
+                const parts = periodVal.split('-');
+                year = parts[0];
+                month = parts[1];
+            }
+            window.open(`{{ route('customer.statement.export') }}?year=${year}&month=${month}&format=pdf&autoprint=1`, '_blank');
         };
     })();
     </script>
