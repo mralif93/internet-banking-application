@@ -18,28 +18,28 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex items-center gap-2.5 flex-wrap">
+        <div class="flex items-center gap-2 flex-wrap xs:flex-nowrap">
             <a
                 href="{{ route('admin.jompay') }}"
-                class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all shadow-2xs"
+                class="w-full xs:w-auto inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all shadow-2xs"
             >
                 <i data-lucide="receipt" class="w-3.5 h-3.5 text-amber-500"></i>
-                <span>JomPAY Directory</span>
+                <span>JomPAY</span>
             </a>
             <a
                 href="{{ route('admin.banks') }}"
-                class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all shadow-2xs"
+                class="w-full xs:w-auto inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all shadow-2xs"
             >
                 <i data-lucide="building-2" class="w-3.5 h-3.5 text-emerald-500"></i>
-                <span>Member Banks</span>
+                <span>Banks</span>
             </a>
             <button
                 type="button"
                 onclick="window.submitParameterForm()"
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-all cursor-pointer shadow-sm shadow-rose-600/20"
+                class="w-full xs:w-auto inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-all cursor-pointer shadow-sm shadow-rose-600/20"
             >
                 <i data-lucide="save" class="w-4 h-4"></i>
-                <span>Save All Parameters</span>
+                <span>Save All</span>
             </button>
         </div>
     </div>
@@ -294,7 +294,43 @@
         </div>
 
         <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-xs">
-            <div class="overflow-x-auto">
+            <!-- Mobile Card View (< md) -->
+            <div class="md:hidden divide-y divide-slate-100 dark:divide-slate-800">
+                @foreach($billers as $biller)
+                    <div class="p-4 space-y-2.5">
+                        <div class="flex items-start justify-between gap-2">
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="px-2 py-0.5 rounded font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border border-amber-200/60 dark:border-amber-800/60 text-xs">
+                                        {{ $biller->biller_code }}
+                                    </span>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                                        {{ $biller->category }}
+                                    </span>
+                                </div>
+                                <div class="font-bold text-slate-900 dark:text-slate-100 text-sm">{{ $biller->biller_name }}</div>
+                                <div class="text-[11px] font-mono text-slate-400 mt-0.5">Ref: {{ $biller->ref_1_label }}</div>
+                            </div>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold shrink-0 {{ $biller->is_active ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400' }}">
+                                <span class="w-1.5 h-1.5 rounded-full {{ $biller->is_active ? 'bg-emerald-500' : 'bg-slate-400' }}"></span>
+                                {{ $biller->is_active ? 'Active' : 'Disabled' }}
+                            </span>
+                        </div>
+                        <div class="pt-1">
+                            <button
+                                type="button"
+                                onclick="window.toggleBillerState({{ $biller->id }})"
+                                class="w-full py-1.5 text-xs font-bold rounded-xl border {{ $biller->is_active ? 'border-rose-200 text-rose-600 bg-rose-50/50 hover:bg-rose-50 dark:border-rose-900/60 dark:text-rose-400 dark:bg-rose-950/30' : 'border-emerald-200 text-emerald-600 bg-emerald-50/50 hover:bg-emerald-50 dark:border-emerald-900/60 dark:text-emerald-400 dark:bg-emerald-950/30' }} transition-colors cursor-pointer text-center"
+                            >
+                                {{ $biller->is_active ? 'Disable' : 'Enable' }}
+                            </button>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Desktop Table View (hidden on mobile) -->
+            <div class="hidden md:block overflow-x-auto">
                 <table class="w-full text-left text-xs sm:text-sm">
                     <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 uppercase font-semibold text-[11px] border-b border-slate-200/80 dark:border-slate-800">
                         <tr>
@@ -374,7 +410,52 @@
         </div>
 
         <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-xs">
-            <div class="overflow-x-auto">
+            <!-- Mobile Card View (< md) -->
+            <div class="md:hidden divide-y divide-slate-100 dark:divide-slate-800">
+                @if(isset($banks))
+                    @foreach($banks as $b)
+                        <div class="p-4 space-y-2.5">
+                            <div class="flex items-start justify-between gap-2">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="px-2 py-0.5 rounded font-mono font-bold text-slate-900 dark:text-slate-100 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs">
+                                            {{ $b->bank_code }}
+                                        </span>
+                                        <span class="font-medium text-emerald-600 dark:text-emerald-400 text-xs">
+                                            {{ $b->short_name }}
+                                        </span>
+                                    </div>
+                                    <div class="font-bold text-slate-900 dark:text-slate-100 text-sm">{{ $b->bank_name }}</div>
+                                    <div class="text-[10px] font-mono text-slate-400 mt-0.5">SWIFT: {{ $b->swift_code ?? '-' }}</div>
+                                </div>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold shrink-0 {{ $b->is_active ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400' }}">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ $b->is_active ? 'bg-emerald-500' : 'bg-slate-400' }}"></span>
+                                    {{ $b->is_active ? 'Active' : 'Offline' }}
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-xs">
+                                <span class="text-[10px] text-slate-400 uppercase font-semibold">Rails:</span>
+                                <div class="flex items-center gap-1">
+                                    <span class="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-pink-50 text-pink-700 dark:bg-pink-950/60 dark:text-pink-300 border border-pink-200/60">DuitNow</span>
+                                    <span class="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200/60">IBG</span>
+                                </div>
+                            </div>
+                            <div class="pt-1">
+                                <button
+                                    type="button"
+                                    onclick="window.toggleBankState({{ $b->id }})"
+                                    class="w-full py-1.5 text-xs font-bold rounded-xl border {{ $b->is_active ? 'border-rose-200 text-rose-600 bg-rose-50/50 hover:bg-rose-50 dark:border-rose-900/60 dark:text-rose-400 dark:bg-rose-950/30' : 'border-emerald-200 text-emerald-600 bg-emerald-50/50 hover:bg-emerald-50 dark:border-emerald-900/60 dark:text-emerald-400 dark:bg-emerald-950/30' }} transition-colors cursor-pointer text-center"
+                                >
+                                    {{ $b->is_active ? 'Take Offline' : 'Enable Rail' }}
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+
+            <!-- Desktop Table View (hidden on mobile) -->
+            <div class="hidden md:block overflow-x-auto">
                 <table class="w-full text-left text-xs sm:text-sm">
                     <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 uppercase font-semibold text-[11px] border-b border-slate-200/80 dark:border-slate-800">
                         <tr>

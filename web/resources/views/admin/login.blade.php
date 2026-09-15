@@ -37,27 +37,27 @@
 
     <!-- Header Strip -->
     <header class="relative z-10 w-full border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-            <div class="flex items-center gap-2.5">
-                <a href="{{ route('home') }}" class="flex items-center gap-2 group">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5 min-w-0">
+                <a href="{{ route('home') }}" class="flex items-center gap-2 group shrink-0">
                     <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-rose-600 to-red-700 flex items-center justify-center text-white font-bold text-xs shadow-md shadow-rose-900/40">
                         <i data-lucide="shield-alert" class="w-4 h-4"></i>
                     </div>
                     <div>
                         <span class="font-bold text-sm text-white tracking-tight flex items-center gap-1.5">
-                            BankFlow <span class="text-[9px] uppercase font-mono font-bold px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">Security Gateway</span>
+                            BankFlow <span class="hidden xs:inline-block text-[9px] uppercase font-mono font-bold px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">Security Gateway</span>
                         </span>
                     </div>
                 </a>
             </div>
 
-            <div class="flex items-center gap-2.5">
-                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-950/70 border border-rose-800/60 text-rose-300 text-[11px] font-mono font-bold">
+            <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
+                <div class="hidden xs:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-950/70 border border-rose-800/60 text-rose-300 text-[11px] font-mono font-bold">
                     <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
-                    CLEARANCE TIER-1
+                    TIER-1
                 </div>
                 <a href="{{ route('customer.dashboard') }}" class="text-xs text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-1">
-                    <span>Retail Portal</span>
+                    <span>Retail</span>
                     <i data-lucide="external-link" class="w-3 h-3"></i>
                 </a>
             </div>

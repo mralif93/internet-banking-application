@@ -1,29 +1,33 @@
 <x-layout.admin title="PayNet Participating Banks — BankFlow MY" activeNav="banks">
 
-    <!-- Page Top Action Bar -->
-    <div class="mb-6 sm:mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-            <div class="flex items-center gap-2 mb-1">
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                    <i data-lucide="landmark" class="w-3 h-3 text-emerald-500"></i>
-                    PayNet MEPS &amp; Interbank Gateway
-                </span>
-                <span class="text-xs text-slate-400">&bull;</span>
-                <span class="text-xs font-mono text-slate-500 dark:text-slate-400">DuitNow &amp; IBG Routing</span>
+    <!-- Standard Admin Page Header -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm animate__animated animate__fadeInDown">
+        <div class="flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-200/60 dark:border-emerald-800/60 shadow-2xs">
+                <i data-lucide="landmark" class="w-5 h-5"></i>
             </div>
-            <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-3">
-                PayNet Participating Banks
-            </h1>
-            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-3xl">
-                Manage approved interbank routing destinations, SWIFT/BIC codes, display prioritization order, and control per-institution maintenance isolations.
-            </p>
+            <div>
+                <div class="flex items-center gap-2 mb-0.5">
+                    <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                        PayNet MEPS &amp; Interbank Gateway
+                    </span>
+                    <span class="text-xs text-slate-400 hidden xs:inline">&bull;</span>
+                    <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400 hidden xs:inline">DuitNow &amp; IBG Routing</span>
+                </div>
+                <h1 class="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100 tracking-tight">
+                    PayNet Participating Banks
+                </h1>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Manage approved routing destinations, SWIFT codes, priority order, and isolation switches.
+                </p>
+            </div>
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex items-center gap-2.5 flex-wrap">
+        <div class="flex items-center gap-2 flex-wrap xs:flex-nowrap">
             <a
                 href="{{ route('admin.parameters') }}"
-                class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all shadow-2xs"
+                class="w-full xs:w-auto inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all shadow-2xs"
             >
                 <i data-lucide="sliders" class="w-3.5 h-3.5 text-slate-400"></i>
                 <span>Parameters Hub</span>
@@ -31,7 +35,7 @@
             <button
                 type="button"
                 onclick="window.openAddBankModal()"
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all cursor-pointer shadow-sm shadow-emerald-600/20"
+                class="w-full xs:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all cursor-pointer shadow-sm shadow-emerald-600/20"
             >
                 <i data-lucide="plus-circle" class="w-4 h-4"></i>
                 <span>Register New Bank</span>
