@@ -17,24 +17,32 @@
                     </p>
                 </div>
             </div>
-
-            <!-- Search Form -->
-            <form method="GET" action="{{ route('admin.customers') }}" class="flex items-center gap-2">
-                <div class="relative">
-                    <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
-                    <input
-                        type="text"
-                        name="search"
-                        value="{{ request('search') }}"
-                        placeholder="Search name, NRIC, username..."
-                        class="pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-rose-500 w-56 sm:w-64"
-                    />
-                </div>
-                <button type="submit" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold cursor-pointer">
-                    Filter
-                </button>
-            </form>
         </div>
+
+        <!-- Reusable Search & Filter Component Section -->
+        <x-ui.search-filter
+            :action="route('admin.customers')"
+            :search="request('search', '')"
+            searchPlaceholder="Search customer name, NRIC, username, email, phone..."
+            :resetUrl="route('admin.customers')"
+            :activeFiltersCount="request()->filled('status') ? 1 : 0"
+            :totalResults="$customers->total()"
+            totalLabel="registered customer accounts"
+            focusRing="rose"
+        >
+            <x-slot:filters>
+                <div class="sm:w-44">
+                    <select
+                        name="status"
+                        class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 focus:outline-rose-500"
+                    >
+                        <option value="">All Account Status</option>
+                        <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active Only</option>
+                        <option value="suspended" {{ request('status') === 'suspended' ? 'selected' : '' }}>Suspended / Frozen</option>
+                    </select>
+                </div>
+            </x-slot:filters>
+        </x-ui.search-filter>
 
         <!-- Customer List Table -->
         <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-xs">

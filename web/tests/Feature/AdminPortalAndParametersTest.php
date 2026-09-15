@@ -239,6 +239,22 @@ class AdminPortalAndParametersTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('PayNet Participating Banks');
     }
+
+    public function test_admin_can_filter_customers_by_search_and_status(): void
+    {
+        $response = $this->get('/admin/customers?search=daniel&status=active');
+        $response->assertStatus(200);
+        $response->assertSee('Customer Account Administration');
+        $response->assertSee('Ahmad Daniel');
+    }
+
+    public function test_admin_can_filter_audit_logs_by_search_and_event(): void
+    {
+        $response = $this->get('/admin/audit-logs?search=admin&event=ADMIN_LOGIN');
+        $response->assertStatus(200);
+        $response->assertSee('WORM Compliance Audit Trail');
+    }
 }
+
 
 

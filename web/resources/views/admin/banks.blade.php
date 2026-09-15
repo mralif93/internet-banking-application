@@ -95,65 +95,43 @@
     </div>
 
     <!-- Filter & Search Controls Bar -->
-    <div class="mb-5 p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-2xs">
-        <form method="GET" action="{{ route('admin.banks') }}" class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
-            <div class="flex-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
-                <!-- Search Input -->
-                <div class="relative flex-1">
-                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-                    <input
-                        type="text"
-                        name="search"
-                        value="{{ $search }}"
-                        placeholder="Search by code (e.g. MBB, CIMB), short name, full title, or SWIFT/BIC..."
-                        class="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-emerald-500"
-                    />
-                </div>
-
-                <!-- Rail Filter -->
-                <div class="sm:w-44">
-                    <select
-                        name="rail"
-                        class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 focus:outline-emerald-500"
-                    >
-                        <option value="">All Routing Rails</option>
-                        <option value="duitnow" {{ $rail === 'duitnow' ? 'selected' : '' }}>DuitNow Only</option>
-                        <option value="ibg" {{ $rail === 'ibg' ? 'selected' : '' }}>IBG Only</option>
-                    </select>
-                </div>
-
-                <!-- Status Filter -->
-                <div class="sm:w-36">
-                    <select
-                        name="status"
-                        class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 focus:outline-emerald-500"
-                    >
-                        <option value="">All Status</option>
-                        <option value="active" {{ $status === 'active' ? 'selected' : '' }}>Active Only</option>
-                        <option value="offline" {{ $status === 'offline' ? 'selected' : '' }}>Offline Only</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Filter Buttons -->
-            <div class="flex items-center gap-2 shrink-0">
-                <button
-                    type="submit"
-                    class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white text-xs font-bold transition-all cursor-pointer shadow-2xs"
+    <x-ui.search-filter
+        :action="route('admin.banks')"
+        :search="$search"
+        searchPlaceholder="Search by code (e.g. MBB, CIMB), short name, full title, or SWIFT/BIC..."
+        :resetUrl="route('admin.banks')"
+        :activeFiltersCount="(!empty($rail) ? 1 : 0) + (!empty($status) ? 1 : 0)"
+        :totalResults="count($banks)"
+        totalLabel="member institutions"
+        focusRing="emerald"
+        class="mb-6"
+    >
+        <x-slot:filters>
+            <!-- Rail Filter -->
+            <div class="sm:w-44">
+                <select
+                    name="rail"
+                    class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 focus:outline-emerald-500"
                 >
-                    Apply Filter
-                </button>
-                @if(!empty($search) || !empty($rail) || !empty($status))
-                    <a
-                        href="{{ route('admin.banks') }}"
-                        class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                    >
-                        Reset
-                    </a>
-                @endif
+                    <option value="">All Routing Rails</option>
+                    <option value="duitnow" {{ $rail === 'duitnow' ? 'selected' : '' }}>DuitNow Only</option>
+                    <option value="ibg" {{ $rail === 'ibg' ? 'selected' : '' }}>IBG Only</option>
+                </select>
             </div>
-        </form>
-    </div>
+
+            <!-- Status Filter -->
+            <div class="sm:w-36">
+                <select
+                    name="status"
+                    class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 focus:outline-emerald-500"
+                >
+                    <option value="">All Status</option>
+                    <option value="active" {{ $status === 'active' ? 'selected' : '' }}>Active Only</option>
+                    <option value="offline" {{ $status === 'offline' ? 'selected' : '' }}>Offline Only</option>
+                </select>
+            </div>
+        </x-slot:filters>
+    </x-ui.search-filter>
 
     <!-- Bank Directory Table Card -->
     <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-xs">

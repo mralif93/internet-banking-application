@@ -17,20 +17,34 @@
                     </p>
                 </div>
             </div>
-
-            <!-- Filter -->
-            <form method="GET" action="{{ route('admin.audit-logs') }}" class="flex items-center gap-2">
-                <select name="event" class="px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100">
-                    <option value="">All Event Types</option>
-                    <option value="SYSTEM_PARAMETER_MODIFIED" {{ request('event') === 'SYSTEM_PARAMETER_MODIFIED' ? 'selected' : '' }}>System Parameters</option>
-                    <option value="EMERGENCY_KILL_SWITCH" {{ request('event') === 'EMERGENCY_KILL_SWITCH' ? 'selected' : '' }}>Emergency Kill Switch</option>
-                    <option value="ADMIN_CUSTOMER" {{ request('event') === 'ADMIN_CUSTOMER' ? 'selected' : '' }}>Admin Account Freeze</option>
-                </select>
-                <button type="submit" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold cursor-pointer">
-                    Filter
-                </button>
-            </form>
         </div>
+
+        <!-- Reusable Search & Filter Component Section -->
+        <x-ui.search-filter
+            :action="route('admin.audit-logs')"
+            :search="request('search', '')"
+            searchPlaceholder="Search event type, target user, NRIC, or origin IP..."
+            :resetUrl="route('admin.audit-logs')"
+            :activeFiltersCount="request()->filled('event') ? 1 : 0"
+            :totalResults="$logs->total()"
+            totalLabel="immutable audit records"
+            focusRing="rose"
+        >
+            <x-slot:filters>
+                <div class="sm:w-56">
+                    <select
+                        name="event"
+                        class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 focus:outline-rose-500"
+                    >
+                        <option value="">All Event Categories</option>
+                        <option value="SYSTEM_PARAMETER_MODIFIED" {{ request('event') === 'SYSTEM_PARAMETER_MODIFIED' ? 'selected' : '' }}>System Parameters</option>
+                        <option value="EMERGENCY_KILL_SWITCH" {{ request('event') === 'EMERGENCY_KILL_SWITCH' ? 'selected' : '' }}>Emergency Kill Switch</option>
+                        <option value="ADMIN_CUSTOMER" {{ request('event') === 'ADMIN_CUSTOMER' ? 'selected' : '' }}>Admin Account Freeze</option>
+                        <option value="ADMIN_LOGIN" {{ request('event') === 'ADMIN_LOGIN' ? 'selected' : '' }}>Admin Session Events</option>
+                    </select>
+                </div>
+            </x-slot:filters>
+        </x-ui.search-filter>
 
         <!-- Audit Log Table -->
         <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-xs">

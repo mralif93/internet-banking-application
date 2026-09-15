@@ -27,6 +27,10 @@ class CustomerManagementController extends Controller
             });
         }
 
+        if ($request->filled('status')) {
+            $query->where('status', $request->get('status'));
+        }
+
         $customers = $query->paginate(15);
 
         return view('admin.customers', compact('customers'));
