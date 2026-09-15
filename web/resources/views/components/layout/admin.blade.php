@@ -425,9 +425,9 @@
             </main>
 
             <!-- ======================================================================
-                 3. HIGH-SECURITY ENTERPRISE FOOTER (Full Width)
+                 3. HIGH-SECURITY ENTERPRISE FOOTER (Desktop Only: hidden on mobile & tablet)
                  ====================================================================== -->
-            <footer class="mt-auto border-t border-slate-200 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md text-slate-500 dark:text-slate-400 text-xs py-5 transition-colors">
+            <footer class="mt-auto hidden lg:block border-t border-slate-200 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md text-slate-500 dark:text-slate-400 text-xs py-5 transition-colors">
                 <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-10 space-y-3">
                     <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left text-[11px]">
                         <!-- Left Status & Entity -->
