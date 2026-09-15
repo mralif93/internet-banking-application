@@ -1,7 +1,7 @@
-<x-layout.admin title="Enterprise Admin & Fraud Operations — BankFlow MY" activeNav="dashboard">
+<x-layout.admin title="Dashboard — BankFlow MY" activeNav="dashboard">
 
     <!-- ======================================================================
-         TOP OPERATIONAL HUD & EMERGENCY CIRCUIT BREAKER
+         1. HERO HEADER: EXECUTIVE DASHBOARD OVERVIEW
          ====================================================================== -->
     <div class="mb-6 rounded-3xl bg-slate-900 border border-slate-800 text-white shadow-2xl p-5 sm:p-7 relative overflow-hidden animate__animated animate__fadeInDown">
         <!-- Ambient decorative gradient orbs -->
@@ -12,16 +12,16 @@
             <!-- Left Info -->
             <div class="flex items-start sm:items-center gap-4">
                 <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-rose-600 via-rose-700 to-red-800 text-white flex items-center justify-center shrink-0 shadow-lg shadow-rose-950/60 ring-2 ring-rose-500/30">
-                    <i data-lucide="shield-alert" class="w-6 h-6 sm:w-7 sm:h-7"></i>
+                    <i data-lucide="layout-dashboard" class="w-6 h-6 sm:w-7 sm:h-7"></i>
                     <span class="absolute -bottom-1 -right-1 flex h-3.5 w-3.5">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-rose-500 ring-2 ring-slate-900"></span>
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 ring-2 ring-slate-900"></span>
                     </span>
                 </div>
                 <div>
                     <div class="flex items-center gap-2 flex-wrap">
-                        <h1 class="text-lg sm:text-xl font-black text-white tracking-tight">
-                            Real-Time AML / Anti-Fraud Radar &amp; Defense Command
+                        <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+                            Executive Administration Dashboard
                         </h1>
                         <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-black uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/30">
                             FIPS 140-2 LEVEL 4
@@ -32,7 +32,7 @@
                         </span>
                     </div>
                     <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
-                        Continuous ISO 20022 clearing telemetry, rapid mule account containment, algorithmic anomaly scoring, and instant BNM RMiT compliance enforcement.
+                        Real-time AML radar telemetry, continuous ISO 20022 clearing performance, account status containment, and BNM RMiT compliance posture.
                     </p>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                     class="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-bold border border-slate-700/80 transition-all cursor-pointer shadow-sm active:scale-95"
                 >
                     <i data-lucide="sliders" class="w-4 h-4 text-slate-400"></i>
-                    <span>Parameters</span>
+                    <span>Parameters Hub</span>
                 </a>
                 <button
                     type="button"
@@ -73,7 +73,7 @@
             <div class="flex items-center gap-2">
                 <div class="w-2 h-2 rounded-full bg-rose-400 animate-pulse"></div>
                 <span class="text-slate-400">Flagged Flows:</span>
-                <span class="font-bold text-rose-400 font-mono">{{ $flaggedCount ?? 3 }} Alerts</span>
+                <span class="font-bold text-rose-400 font-mono">{{ $flaggedCount ?? 0 }} Alerts</span>
             </div>
             <div class="flex items-center gap-2">
                 <div class="w-2 h-2 rounded-full bg-indigo-400"></div>
@@ -84,7 +84,7 @@
     </div>
 
     <!-- ======================================================================
-         CORE TELEMETRY METRIC TILES
+         2. CORE TELEMETRY METRIC TILES
          ====================================================================== -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-7">
         
@@ -124,12 +124,12 @@
             </div>
             <div class="mt-3 flex items-baseline justify-between">
                 <h3 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-50 font-mono tracking-tight">
-                    RM {{ number_format($allVolume ?? 72540, 2) }}
+                    RM {{ number_format($allVolume ?? 0, 2) }}
                 </h3>
             </div>
             <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
                 <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-emerald-500"></i>
-                <span>{{ $totalTransactionCount ?? 5 }} Total Settlements</span>
+                <span>{{ $totalTransactionCount ?? 0 }} Total Settlements</span>
             </p>
         </div>
 
@@ -153,7 +153,7 @@
             </div>
             <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
                 <i data-lucide="shield-check" class="w-3.5 h-3.5 text-slate-400"></i>
-                <span>Customer Kill Switch or Admin</span>
+                <span>Kill Switch or Admin intervention</span>
             </p>
         </div>
 
@@ -169,10 +169,10 @@
             </div>
             <div class="mt-3 flex items-baseline justify-between">
                 <h3 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-slate-50 font-mono tracking-tight">
-                    {{ $activeCustomersCount ?? 2 }}
+                    {{ $activeCustomersCount ?? 0 }}
                 </h3>
                 <span class="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-md bg-sky-50 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300 border border-sky-200/60 dark:border-sky-800/40">
-                    {{ $totalCustomersCount ?? 2 }} Enrolled
+                    {{ $totalCustomersCount ?? 0 }} Enrolled
                 </span>
             </div>
             <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
@@ -184,7 +184,7 @@
     </div>
 
     <!-- ======================================================================
-         PAYMENT RAIL CLEARING TELEMETRY (Real-Time Stream Health)
+         3. PAYMENT RAIL CLEARING TELEMETRY (Real-Time Stream Health)
          ====================================================================== -->
     <div class="mb-7">
         <div class="flex items-center justify-between mb-3 px-1">
@@ -234,7 +234,7 @@
     </div>
 
     <!-- ======================================================================
-         SPLIT SECTION: AML FRAUD RADAR & LIVE EVENT LOG
+         4. SPLIT SECTION: AML RADAR WATCHLIST & REAL-TIME LOGS
          ====================================================================== -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-7">
 
@@ -247,10 +247,10 @@
                     <div>
                         <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                             <i data-lucide="shield-alert" class="w-4 h-4 text-rose-500"></i>
-                            <span>High-Value &amp; Suspicious Transaction Watchlist</span>
+                            <span>Real-Time AML / Anti-Fraud Radar</span>
                         </h3>
                         <p class="text-xs text-slate-400 mt-0.5">
-                            Transactions exceeding RM 5,000 threshold requiring senior fraud analyst vigilance
+                            High-value &amp; suspicious transaction watchlist exceeding RM 5,000 threshold
                         </p>
                     </div>
 
@@ -298,40 +298,32 @@
                                                 RM {{ number_format($tx->amount, 2) }}
                                             </span>
                                             <div class="text-[10px] text-slate-400 uppercase font-mono mt-0.5">
-                                                {{ ucfirst(str_replace('_', ' ', $tx->transaction_type)) }}
+                                                {{ $tx->type ?? 'DUITNOW' }}
                                             </div>
                                         </td>
                                         <td class="px-4 py-3.5 sm:px-5">
-                                            @if($tx->amount >= 10000)
-                                                <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800">
-                                                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
-                                                    High-Value (&ge;RM10k)
-                                                </span>
-                                            @else
-                                                <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
-                                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                                    Escalated Flow (&ge;RM5k)
-                                                </span>
-                                            @endif
+                                            <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900">
+                                                <i data-lucide="alert-triangle" class="w-3 h-3"></i>
+                                                {{ $tx->amount >= 10000 ? 'High Value Rule' : 'Velocity Anomaly' }}
+                                            </span>
                                         </td>
                                         <td class="px-4 py-3.5 sm:px-5 text-right">
                                             <button
                                                 type="button"
-                                                onclick="window.inspectTransactionDetail('{{ $tx->reference_number }}', '{{ $tx->amount }}', '{{ $tx->recipient_name ?? $tx->description }}')"
-                                                class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white text-[11px] font-bold cursor-pointer transition-all active:scale-95 shadow-2xs"
+                                                onclick="window.inspectTransactionDetail('{{ $tx->reference_number }}', '{{ number_format($tx->amount, 2) }}', '{{ $tx->recipient_name ?? 'Counterparty' }}')"
+                                                class="px-2.5 py-1 text-[11px] font-semibold rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 transition-colors cursor-pointer"
                                             >
-                                                <i data-lucide="shield-check" class="w-3 h-3 text-rose-400"></i>
-                                                <span>Audit Flow</span>
+                                                Inspect
                                             </button>
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="5" class="px-4 py-8 text-center text-slate-400">
+                                    <td colspan="5" class="px-5 py-8 text-center text-slate-400">
                                         <i data-lucide="shield-check" class="w-8 h-8 text-emerald-500 mx-auto mb-2 opacity-80"></i>
-                                        <p class="font-bold text-slate-700 dark:text-slate-300">No High-Risk Suspicious Transactions Flagged</p>
-                                        <p class="text-xs text-slate-400 mt-1">All clearing transactions are operating within standard safety limits.</p>
+                                        <p class="text-xs font-semibold">No high-risk transactions currently flagged</p>
+                                        <p class="text-[11px] text-slate-400 mt-0.5">Automated screening active on all PayNet clearing endpoints</p>
                                     </td>
                                 </tr>
                             @endif
@@ -341,12 +333,12 @@
 
             </div>
 
-            <!-- Recent Real-Time Flow Stream (All transactions) -->
+            <!-- Live Settlement Feed Card -->
             <div class="rounded-3xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-xs">
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
                     <div>
-                        <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                            <i data-lucide="git-commit" class="w-4 h-4 text-emerald-500"></i>
+                        <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                            <i data-lucide="activity" class="w-4 h-4 text-emerald-500"></i>
                             <span>Live Clearing Ledger Feed</span>
                         </h3>
                         <p class="text-xs text-slate-400 mt-0.5">Continuous stream of inbound and outbound transactions</p>
@@ -445,7 +437,7 @@
                 <div class="space-y-3">
                     <button
                         type="button"
-                        onclick="window.quickRailAction('DuitNow Instant Rail', 'HALT')"
+                        onclick="window.quickRailAction('DuitNow Outbound Rail', 'HALT')"
                         class="w-full flex items-center justify-between p-3 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-rose-300 dark:hover:border-rose-800 bg-slate-50/50 dark:bg-slate-800/30 transition-all text-left cursor-pointer group"
                     >
                         <div>

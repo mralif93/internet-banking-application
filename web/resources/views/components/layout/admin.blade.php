@@ -233,8 +233,8 @@
 
                             <div class="space-y-0.5 text-xs">
                                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                                    <i data-lucide="activity" class="w-4 h-4 text-slate-400"></i>
-                                    <span>Command Center</span>
+                                    <i data-lucide="layout-dashboard" class="w-4 h-4 text-slate-400"></i>
+                                    <span>Dashboard</span>
                                 </a>
                                 <a href="{{ route('admin.parameters') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                                     <i data-lucide="sliders" class="w-4 h-4 text-slate-400"></i>
@@ -319,8 +319,8 @@
                             class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl font-bold transition-all group {{ $activeNav === 'fraud' || $activeNav === 'dashboard' ? 'bg-rose-600 text-white shadow-md shadow-rose-950/20 dark:shadow-rose-950' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/70' }}"
                         >
                             <div class="flex items-center gap-3">
-                                <i data-lucide="activity" class="w-4 h-4 {{ $activeNav === 'fraud' || $activeNav === 'dashboard' ? 'text-white' : 'text-slate-400 group-hover:text-slate-800 dark:group-hover:text-white' }}"></i>
-                                <span>Command Center</span>
+                                <i data-lucide="layout-dashboard" class="w-4 h-4 {{ $activeNav === 'fraud' || $activeNav === 'dashboard' ? 'text-white' : 'text-slate-400 group-hover:text-slate-800 dark:group-hover:text-white' }}"></i>
+                                <span>Dashboard</span>
                             </div>
                             @if($activeNav === 'fraud' || $activeNav === 'dashboard')
                                 <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
@@ -461,7 +461,7 @@
                             RESTRICTED ACCESS: This operational console is restricted to authorized risk and fraud officers. All actions, parameter adjustments, and account isolation events are cryptographically sealed in WORM ledger storage.
                         </p>
                         <div class="flex items-center gap-2 shrink-0">
-                            <a href="{{ route('admin.dashboard') }}" class="hover:text-slate-600 dark:hover:text-slate-300 transition-colors">Command</a>
+                            <a href="{{ route('admin.dashboard') }}" class="hover:text-slate-600 dark:hover:text-slate-300 transition-colors">Dashboard</a>
                             <span>&bull;</span>
                             <a href="{{ route('admin.parameters') }}" class="hover:text-slate-600 dark:hover:text-slate-300 transition-colors">Parameters</a>
                             <span>&bull;</span>
@@ -545,8 +545,8 @@
                         onclick="window.toggleAdminDrawer()"
                         class="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl transition-all {{ $activeNav === 'fraud' || $activeNav === 'dashboard' ? 'bg-rose-600 text-white font-bold shadow-md shadow-rose-950/20 dark:shadow-rose-950' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white' }}"
                     >
-                        <i data-lucide="activity" class="w-4 h-4"></i>
-                        <span>Command Center &amp; Radar</span>
+                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                        <span>Dashboard</span>
                     </a>
                     <a
                         href="{{ route('admin.parameters') }}"
@@ -633,13 +633,13 @@
     <nav aria-label="Admin Mobile Navigation" class="lg:hidden fixed bottom-0 inset-x-0 z-30 px-2 sm:px-4 pointer-events-none flex justify-center pb-[env(safe-area-inset-bottom,0px)]">
         <div class="pointer-events-auto w-full max-w-sm bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/90 dark:border-slate-800 text-slate-900 dark:text-white rounded-t-2xl px-3 py-1.5 shadow-2xl transition-colors">
             <div class="flex items-center justify-around">
-                <!-- Command Radar -->
+                <!-- Dashboard -->
                 <a
                     href="{{ route('admin.dashboard') }}"
                     class="flex flex-col items-center gap-0.5 px-2 py-1 {{ $activeNav === 'fraud' || $activeNav === 'dashboard' ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }} transition-colors"
                 >
-                    <i data-lucide="activity" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-                    <span class="text-[9px] font-medium">Command</span>
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                    <span class="text-[9px] font-medium">Dashboard</span>
                 </a>
 
                 <!-- Parameters -->
@@ -703,8 +703,8 @@
                 <div class="py-2 space-y-1 text-xs">
                     <p class="px-2 py-1 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase font-mono">Quick Navigation</p>
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors">
-                        <i data-lucide="activity" class="w-4 h-4 text-rose-500"></i>
-                        <span>Command Center &amp; AML Radar</span>
+                        <i data-lucide="layout-dashboard" class="w-4 h-4 text-rose-500"></i>
+                        <span>Dashboard</span>
                     </a>
                     <a href="{{ route('admin.parameters') }}" class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors">
                         <i data-lucide="sliders" class="w-4 h-4 text-rose-500"></i>
