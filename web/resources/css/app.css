@@ -1,0 +1,315 @@
+@import 'tailwindcss';
+@import 'animate.css';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../js/**/*.js';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-brand-primary: var(--color-primary, #059669);
+    --color-brand-primary-hover: var(--color-primary-hover, #047857);
+    --color-brand-primary-light: var(--color-primary-light, #ecfdf5);
+    --color-brand-primary-dark: var(--color-primary-dark, #10b981);
+
+    --color-brand-secondary: var(--color-secondary, #0d9488);
+    --color-brand-accent: #d97706;
+}
+
+@layer base {
+    /* Base Color Theme Variables */
+    :root, html, html[data-color-theme="emerald"] {
+        --color-primary: #059669;
+        --color-primary-hover: #047857;
+        --color-primary-light: #ecfdf5;
+        --color-primary-dark: #10b981;
+        --color-secondary: #0d9488;
+        --theme-ring: rgba(5, 150, 105, 0.35);
+        --theme-gradient: linear-gradient(135deg, #059669, #10b981, #14b8a6);
+        --theme-meta: #059669;
+    }
+
+    html[data-color-theme="blue"] {
+        --color-primary: #2563eb;
+        --color-primary-hover: #1d4ed8;
+        --color-primary-light: #eff6ff;
+        --color-primary-dark: #3b82f6;
+        --color-secondary: #0284c7;
+        --theme-ring: rgba(37, 99, 235, 0.35);
+        --theme-gradient: linear-gradient(135deg, #1d4ed8, #2563eb, #38bdf8);
+        --theme-meta: #2563eb;
+    }
+
+    html[data-color-theme="purple"] {
+        --color-primary: #7c3aed;
+        --color-primary-hover: #6d28d9;
+        --color-primary-light: #f5f3ff;
+        --color-primary-dark: #8b5cf6;
+        --color-secondary: #9333ea;
+        --theme-ring: rgba(124, 58, 237, 0.35);
+        --theme-gradient: linear-gradient(135deg, #6d28d9, #7c3aed, #c084fc);
+        --theme-meta: #7c3aed;
+    }
+
+    html[data-color-theme="amber"] {
+        --color-primary: #d97706;
+        --color-primary-hover: #b45309;
+        --color-primary-light: #fffbeb;
+        --color-primary-dark: #f59e0b;
+        --color-secondary: #ea580c;
+        --theme-ring: rgba(217, 119, 6, 0.35);
+        --theme-gradient: linear-gradient(135deg, #b45309, #d97706, #fbbf24);
+        --theme-meta: #d97706;
+    }
+
+    html[data-color-theme="rose"] {
+        --color-primary: #e11d48;
+        --color-primary-hover: #be123c;
+        --color-primary-light: #fff1f2;
+        --color-primary-dark: #f43f5e;
+        --color-secondary: #db2777;
+        --theme-ring: rgba(225, 29, 72, 0.35);
+        --theme-gradient: linear-gradient(135deg, #be123c, #e11d48, #fb7185);
+        --theme-meta: #e11d48;
+    }
+
+    /* Smooth theme transitions */
+    html {
+        color-scheme: light dark;
+        -webkit-tap-highlight-color: transparent;
+        scroll-behavior: smooth;
+    }
+}
+
+/* Custom interactive animations and effects */
+@keyframes floatSlow {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes pulseSubtle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.65; }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.animate-float {
+    animation: floatSlow 5s ease-in-out infinite;
+}
+
+.animate-pulse-subtle {
+    animation: pulseSubtle 3s ease-in-out infinite;
+}
+
+/* Interactive Card Glow Effect on Hover */
+.interactive-card {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.interactive-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(15, 118, 110, 0.08), 0 8px 10px -6px rgba(15, 118, 110, 0.05);
+}
+.dark .interactive-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(20, 184, 166, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive Modal Animation: Native bottom sheet slide up on mobile, zoom on desktop */
+@media (max-width: 639.98px) {
+    .modal-bottom-sheet {
+        animation-name: mobileSlideUp !important;
+        animation-duration: 0.35s !important;
+        animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
+        will-change: transform;
+    }
+}
+
+@media (min-width: 640px) {
+    .modal-bottom-sheet {
+        animation-name: zoomIn !important;
+        animation-duration: 0.25s !important;
+        animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+}
+
+@keyframes mobileSlideUp {
+    0% {
+        transform: translate3d(0, 100%, 0);
+        opacity: 0.6;
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+}
+
+/* Dynamic Primary & Secondary Theme Utilities */
+.bg-theme-primary {
+    background-color: var(--color-primary, #059669) !important;
+}
+.hover\:bg-theme-primary-hover:hover {
+    background-color: var(--color-primary-hover, #047857) !important;
+}
+.text-theme-primary {
+    color: var(--color-primary, #059669) !important;
+}
+.dark .text-theme-primary {
+    color: var(--color-primary-dark, #10b981) !important;
+}
+.hover\:text-theme-primary:hover {
+    color: var(--color-primary, #059669) !important;
+}
+.dark .hover\:text-theme-primary:hover {
+    color: var(--color-primary-dark, #10b981) !important;
+}
+.border-theme-primary {
+    border-color: var(--color-primary, #059669) !important;
+}
+.bg-theme-primary-light {
+    background-color: var(--color-primary-light, #ecfdf5) !important;
+}
+.dark .bg-theme-primary-light {
+    background-color: color-mix(in srgb, var(--color-primary, #059669) 18%, #0f172a) !important;
+}
+.ring-theme-primary:focus, .ring-theme-primary:focus-within {
+    --tw-ring-color: var(--theme-ring, rgba(5, 150, 105, 0.35)) !important;
+}
+.bg-theme-gradient {
+    background-image: var(--theme-gradient, linear-gradient(135deg, #059669, #10b981, #14b8a6)) !important;
+}
+.shadow-theme-primary {
+    box-shadow: 0 10px 15px -3px var(--theme-ring, rgba(5, 150, 105, 0.25)) !important;
+}
+
+/* ==========================================================================
+   DYNAMIC COLOR THEME RE-MAP: Blue, Purple, Amber, Rose
+   Overriding primary emerald utility classes when data-color-theme is changed
+   ========================================================================== */
+html[data-color-theme]:not([data-color-theme="emerald"]) {
+    /* Primary Backgrounds */
+    .bg-emerald-600 {
+        background-color: var(--color-primary) !important;
+    }
+    .hover\:bg-emerald-700:hover,
+    .hover\:bg-emerald-500:hover {
+        background-color: var(--color-primary-hover) !important;
+    }
+    .bg-emerald-500 {
+        background-color: var(--color-primary) !important;
+    }
+    
+    /* Primary Light Backgrounds (Badges, subtle surfaces) */
+    .bg-emerald-50 {
+        background-color: var(--color-primary-light) !important;
+    }
+    .bg-emerald-100 {
+        background-color: color-mix(in srgb, var(--color-primary) 18%, white) !important;
+    }
+    .bg-emerald-500\/10 {
+        background-color: color-mix(in srgb, var(--color-primary) 10%, transparent) !important;
+    }
+    .bg-emerald-500\/20 {
+        background-color: color-mix(in srgb, var(--color-primary) 20%, transparent) !important;
+    }
+    
+    /* Dark Mode Light Backgrounds */
+    &.dark .dark\:bg-emerald-950\/60,
+    &.dark .dark\:bg-emerald-950\/80,
+    &.dark .dark\:bg-emerald-950\/40,
+    &.dark .dark\:bg-emerald-950\/30,
+    &.dark .dark\:bg-emerald-950,
+    &.dark .dark\:bg-emerald-900\/60 {
+        background-color: color-mix(in srgb, var(--color-primary) 18%, #0f172a) !important;
+    }
+
+    /* Primary Text */
+    .text-emerald-600,
+    .text-emerald-700 {
+        color: var(--color-primary) !important;
+    }
+    &.dark .dark\:text-emerald-400,
+    &.dark .dark\:text-emerald-300 {
+        color: var(--color-primary-dark) !important;
+    }
+    .hover\:text-emerald-600:hover,
+    .hover\:text-emerald-700:hover {
+        color: var(--color-primary-hover) !important;
+    }
+    &.dark .dark\:hover\:text-emerald-400:hover {
+        color: var(--color-primary-dark) !important;
+    }
+
+    /* Primary Borders */
+    .border-emerald-500,
+    .border-emerald-600 {
+        border-color: var(--color-primary) !important;
+    }
+    .border-emerald-500\/20,
+    .border-emerald-200,
+    .border-emerald-300 {
+        border-color: color-mix(in srgb, var(--color-primary) 30%, transparent) !important;
+    }
+    &.dark .dark\:border-emerald-900\/60,
+    &.dark .dark\:border-emerald-800\/40 {
+        border-color: color-mix(in srgb, var(--color-primary) 35%, transparent) !important;
+    }
+    .hover\:border-emerald-300:hover {
+        border-color: color-mix(in srgb, var(--color-primary) 40%, transparent) !important;
+    }
+
+    /* Primary Focus Rings */
+    .focus\:ring-emerald-500:focus,
+    .focus\:ring-emerald-500:focus-within {
+        --tw-ring-color: var(--theme-ring) !important;
+    }
+    .focus\:border-emerald-500:focus {
+        border-color: var(--color-primary) !important;
+    }
+
+    /* Shadow Colors */
+    .shadow-emerald-600\/20,
+    .shadow-emerald-600\/25,
+    .shadow-emerald-500\/25,
+    .shadow-emerald-500\/35,
+    .shadow-emerald-500\/20,
+    .shadow-emerald-500\/30 {
+        box-shadow: 0 10px 15px -3px var(--theme-ring) !important;
+    }
+
+    /* Selection Colors */
+    ::selection,
+    .selection\:bg-emerald-600::selection,
+    .selection\:bg-emerald-500::selection {
+        background-color: var(--color-primary) !important;
+        color: #ffffff !important;
+    }
+
+    /* Interactive Hover Transitions (e.g. settings accordion icon blocks) */
+    .group:hover .group-hover\:bg-emerald-600 {
+        background-color: var(--color-primary) !important;
+    }
+    .group:hover .group-hover\:text-emerald-600 {
+        color: var(--color-primary) !important;
+    }
+    &.dark .group:hover .dark\:group-hover\:text-emerald-400 {
+        color: var(--color-primary-dark) !important;
+    }
+
+    /* Card Gradient Overrides */
+    .from-emerald-600.to-teal-500,
+    .from-emerald-600.via-emerald-500.to-teal-400,
+    .from-emerald-700.to-teal-900,
+    .from-emerald-800.via-emerald-900.to-teal-950 {
+        background-image: var(--theme-gradient) !important;
+    }
+}
+
+
