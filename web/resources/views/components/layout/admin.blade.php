@@ -631,55 +631,51 @@
          MOBILE BOTTOM FLOATING ACTION BAR (Visible on < lg devices)
          ====================================================================== -->
     <nav aria-label="Admin Mobile Navigation" class="lg:hidden fixed bottom-0 inset-x-0 z-30 px-2 sm:px-4 pointer-events-none flex justify-center pb-[env(safe-area-inset-bottom,0px)]">
-        <div class="pointer-events-auto w-full max-w-sm bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/90 dark:border-slate-800 text-slate-900 dark:text-white rounded-t-2xl px-3 py-1.5 shadow-2xl transition-colors">
-            <div class="flex items-center justify-around">
+        <div class="pointer-events-auto w-full max-w-md bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200/90 dark:border-slate-800 text-slate-900 dark:text-white rounded-t-2xl px-2 sm:px-3 py-2 shadow-2xl transition-colors">
+            <div class="grid grid-cols-5 items-center">
                 <!-- Dashboard -->
                 <a
                     href="{{ route('admin.dashboard') }}"
-                    class="flex flex-col items-center gap-0.5 px-2 py-1 {{ $activeNav === 'fraud' || $activeNav === 'dashboard' ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }} transition-colors"
+                    class="flex flex-col items-center justify-center gap-1 py-1 {{ $activeNav === 'fraud' || $activeNav === 'dashboard' ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }} transition-colors"
                 >
-                    <i data-lucide="layout-dashboard" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-                    <span class="text-[9px] font-medium">Dashboard</span>
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span class="text-[10px]">Dashboard</span>
                 </a>
 
                 <!-- Parameters -->
                 <a
                     href="{{ route('admin.parameters') }}"
-                    class="flex flex-col items-center gap-0.5 px-2 py-1 {{ $activeNav === 'parameters' ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }} transition-colors"
+                    class="flex flex-col items-center justify-center gap-1 py-1 {{ $activeNav === 'parameters' ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }} transition-colors"
                 >
-                    <i data-lucide="sliders" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-                    <span class="text-[9px] font-medium">Parameters</span>
+                    <i data-lucide="sliders" class="w-5 h-5"></i>
+                    <span class="text-[10px]">Params</span>
                 </a>
 
-                <!-- Emergency Freeze Action -->
-                <button
-                    type="button"
-                    onclick="alert('BROADCAST CIRCUIT BREAKER: Universal PayNet Outbound rail freeze test simulated.');"
-                    class="flex flex-col items-center gap-0.5 px-2 cursor-pointer group"
-                    aria-label="Universal Kill Switch"
+                <!-- JomPAY -->
+                <a
+                    href="{{ route('admin.jompay') }}"
+                    class="flex flex-col items-center justify-center gap-1 py-1 {{ $activeNav === 'jompay' ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }} transition-colors"
                 >
-                    <div class="w-10 h-10 -mt-4 rounded-full bg-rose-600 text-white flex items-center justify-center shadow-lg shadow-rose-900/40 ring-4 ring-white dark:ring-slate-900 group-hover:scale-105 transition-all">
-                        <i data-lucide="zap-off" class="w-4 h-4"></i>
-                    </div>
-                    <span class="text-[9px] font-bold text-rose-600 dark:text-rose-400">Freeze</span>
-                </button>
+                    <i data-lucide="receipt" class="w-5 h-5"></i>
+                    <span class="text-[10px]">JomPAY</span>
+                </a>
 
                 <!-- Customers -->
                 <a
                     href="{{ route('admin.customers') }}"
-                    class="flex flex-col items-center gap-0.5 px-2 py-1 {{ $activeNav === 'customers' ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }} transition-colors"
+                    class="flex flex-col items-center justify-center gap-1 py-1 {{ $activeNav === 'customers' ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }} transition-colors"
                 >
-                    <i data-lucide="users" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-                    <span class="text-[9px] font-medium">Customers</span>
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span class="text-[10px]">Customers</span>
                 </a>
 
                 <!-- Audit Logs -->
                 <a
                     href="{{ route('admin.audit-logs') }}"
-                    class="flex flex-col items-center gap-0.5 px-2 py-1 {{ $activeNav === 'audit' ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }} transition-colors"
+                    class="flex flex-col items-center justify-center gap-1 py-1 {{ $activeNav === 'audit' ? 'text-rose-600 dark:text-rose-400 font-bold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }} transition-colors"
                 >
-                    <i data-lucide="file-check" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-                    <span class="text-[9px] font-medium">Audit</span>
+                    <i data-lucide="file-check" class="w-5 h-5"></i>
+                    <span class="text-[10px]">Audit</span>
                 </a>
             </div>
         </div>
