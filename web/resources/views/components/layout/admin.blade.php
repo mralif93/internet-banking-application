@@ -395,8 +395,8 @@
                     </div>
                 </div>
 
-                <!-- Sidebar Footer Status & Sign Out -->
-                <div class="pt-4 border-t border-slate-200/80 dark:border-slate-800 space-y-3">
+                <!-- Sidebar Footer Status -->
+                <div class="pt-4 border-t border-slate-200/80 dark:border-slate-800">
                     <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800 text-[11px] space-y-1.5">
                         <div class="flex items-center justify-between">
                             <span class="text-slate-500 dark:text-slate-400">Audit Protocol:</span>
@@ -407,17 +407,6 @@
                             <span class="font-mono text-slate-700 dark:text-slate-300">TLS 1.3 / FIPS</span>
                         </div>
                     </div>
-
-                    <form method="POST" action="{{ route('admin.logout') }}">
-                        @csrf
-                        <button
-                            type="submit"
-                            class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-rose-50 hover:bg-rose-600 dark:bg-rose-600/15 dark:hover:bg-rose-600 text-rose-700 dark:text-rose-400 hover:text-white dark:hover:text-white font-bold text-xs border border-rose-200/80 dark:border-rose-600/30 transition-all cursor-pointer shadow-xs active:scale-98"
-                        >
-                            <i data-lucide="log-out" class="w-4 h-4"></i>
-                            <span>Sign Out Terminal</span>
-                        </button>
-                    </form>
                 </div>
 
             </div>
