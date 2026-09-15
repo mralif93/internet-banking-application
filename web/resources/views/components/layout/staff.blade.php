@@ -83,7 +83,7 @@
 
                 <!-- Right Actions: Theme, Hotline & User Profile -->
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <x-ui.dark-toggle />
+                    <x-ui.dark-toggle class="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center p-0 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300" />
 
                     <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 text-xs font-semibold">
                         <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>

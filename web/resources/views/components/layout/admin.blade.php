@@ -187,8 +187,8 @@
                         DEFCON: 5 (MONITOR)
                     </div>
 
-                    <!-- Dark / Light Theme Toggle -->
-                    <x-ui.dark-toggle class="border-slate-200 dark:border-slate-700 bg-slate-100/90 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200/80 dark:hover:bg-slate-700 w-9 h-9 sm:w-10 sm:h-10 rounded-xl" />
+                    <!-- Dark / Light Theme Toggle (Circle Icon Button matching public layout) -->
+                    <x-ui.dark-toggle class="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center p-0 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300" />
 
                     <!-- Profile Dropdown Trigger -->
                     <div class="relative">
