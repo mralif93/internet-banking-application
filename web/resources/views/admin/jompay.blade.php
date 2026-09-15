@@ -146,7 +146,72 @@
             </span>
         </div>
 
-        <div class="overflow-x-auto">
+        <!-- Mobile Card View (< md) -->
+        <div class="md:hidden divide-y divide-slate-100 dark:divide-slate-800">
+            @forelse($billers as $biller)
+                <div class="p-4 space-y-3">
+                    <div class="flex items-start justify-between gap-3">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="px-2 py-0.5 rounded font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border border-amber-200/60 dark:border-amber-800/60 text-xs">
+                                    {{ $biller->biller_code }}
+                                </span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                                    {{ $biller->category }}
+                                </span>
+                            </div>
+                            <div class="font-bold text-slate-900 dark:text-slate-100 text-sm">
+                                {{ $biller->biller_name }}
+                            </div>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0 {{ $biller->is_active ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ $biller->is_active ? 'bg-emerald-500' : 'bg-slate-400' }}"></span>
+                            {{ $biller->is_active ? 'Active' : 'Disabled' }}
+                        </span>
+                    </div>
+
+                    <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-xs space-y-1">
+                        <div class="flex justify-between">
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold">Ref-1 Format:</span>
+                            <span class="font-mono text-slate-700 dark:text-slate-300">{{ $biller->ref_1_label }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold">Ref-2 Status:</span>
+                            @if($biller->is_ref_2_required)
+                                <span class="font-mono text-[11px] font-bold text-rose-600 dark:text-rose-400">
+                                    Required ({{ $biller->ref_2_label ?? 'Ref 2' }})
+                                </span>
+                            @elseif($biller->ref_2_label)
+                                <span class="text-slate-400 font-mono text-[11px]">
+                                    Optional ({{ $biller->ref_2_label }})
+                                </span>
+                            @else
+                                <span class="text-slate-400 font-mono text-[11px]">None</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="pt-1">
+                        <button
+                            type="button"
+                            onclick="window.toggleBillerState({{ $biller->id }})"
+                            class="w-full py-2 text-xs font-bold rounded-xl border {{ $biller->is_active ? 'border-rose-200 text-rose-600 bg-rose-50/50 hover:bg-rose-50 dark:border-rose-900/60 dark:text-rose-400 dark:bg-rose-950/30' : 'border-emerald-200 text-emerald-600 bg-emerald-50/50 hover:bg-emerald-50 dark:border-emerald-900/60 dark:text-emerald-400 dark:bg-emerald-950/30' }} transition-colors cursor-pointer text-center"
+                        >
+                            {{ $biller->is_active ? 'Disable Biller' : 'Enable Biller' }}
+                        </button>
+                    </div>
+                </div>
+            @empty
+                <div class="p-8 text-center text-slate-400">
+                    <i data-lucide="receipt" class="w-8 h-8 mx-auto mb-2 text-slate-300 dark:text-slate-600"></i>
+                    <p class="text-sm font-semibold">No JomPAY billers match your search criteria</p>
+                    <p class="text-xs text-slate-400 mt-1">Try refining your keyword or clearing filters.</p>
+                </div>
+            @endforelse
+        </div>
+
+        <!-- Desktop Table View (hidden on mobile) -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="w-full text-left text-xs sm:text-sm">
                 <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 uppercase font-semibold text-[11px] border-b border-slate-200/80 dark:border-slate-800">
                     <tr>

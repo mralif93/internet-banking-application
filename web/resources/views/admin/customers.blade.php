@@ -45,8 +45,61 @@
         </x-ui.search-filter>
 
         <!-- Customer List Table -->
+        <!-- Customer List: Mobile Cards + Desktop Table -->
         <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-xs">
-            <div class="overflow-x-auto">
+            <!-- Mobile Card View (< md) -->
+            <div class="md:hidden divide-y divide-slate-100 dark:divide-slate-800">
+                @forelse($customers as $c)
+                    @php
+                        $acc = $c->accounts->first();
+                    @endphp
+                    <div class="p-4 space-y-3">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <div class="font-bold text-slate-900 dark:text-slate-100 text-sm">{{ $c->name }}</div>
+                                <div class="text-[11px] text-slate-400 font-mono">&#64;{{ $c->username }} &bull; {{ $c->phone_number }}</div>
+                            </div>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold shrink-0 {{ $c->status === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-rose-50 text-rose-700 dark:bg-rose-950 dark:text-rose-300' }}">
+                                <span class="w-1.5 h-1.5 rounded-full {{ $c->status === 'active' ? 'bg-emerald-500' : 'bg-rose-500' }}"></span>
+                                {{ ucfirst($c->status) }}
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-xs">
+                            <div>
+                                <div class="text-[10px] text-slate-400 uppercase font-semibold">NRIC</div>
+                                <div class="font-mono text-slate-700 dark:text-slate-300">{{ $c->nric }}</div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] text-slate-400 uppercase font-semibold">Deposit Account</div>
+                                <div class="font-mono text-slate-700 dark:text-slate-300 truncate">{{ $acc ? $acc->account_number : 'None' }}</div>
+                            </div>
+                            <div class="col-span-2 pt-1 border-t border-slate-200/50 dark:border-slate-700/50 flex items-center justify-between">
+                                <span class="text-[10px] text-slate-400 uppercase font-semibold">Balance</span>
+                                <span class="font-mono font-bold text-slate-900 dark:text-slate-100 text-sm">RM {{ number_format($acc ? $acc->balance : 0, 2) }}</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-1">
+                            <button
+                                type="button"
+                                onclick="window.toggleCustomerFreeze({{ $c->id }}, '{{ $c->status }}')"
+                                class="w-full py-2 text-xs font-bold rounded-xl border {{ $c->status === 'active' ? 'border-rose-200 text-rose-600 bg-rose-50/50 hover:bg-rose-50 dark:border-rose-900/60 dark:text-rose-400 dark:bg-rose-950/30' : 'border-emerald-200 text-emerald-600 bg-emerald-50/50 hover:bg-emerald-50 dark:border-emerald-900/60 dark:text-emerald-400 dark:bg-emerald-950/30' }} transition-colors cursor-pointer text-center"
+                            >
+                                {{ $c->status === 'active' ? 'Freeze / Suspend Account' : 'Reactivate Account Access' }}
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <div class="p-8 text-center text-slate-400">
+                        <i data-lucide="users" class="w-8 h-8 mx-auto mb-2 text-slate-300 dark:text-slate-600"></i>
+                        <p class="text-sm font-semibold">No customers found</p>
+                    </div>
+                @endforelse
+            </div>
+
+            <!-- Desktop Table View (hidden on mobile) -->
+            <div class="hidden md:block overflow-x-auto">
                 <table class="w-full text-left text-xs sm:text-sm">
                     <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 uppercase font-semibold text-[11px] border-b border-slate-200/80 dark:border-slate-800">
                         <tr>

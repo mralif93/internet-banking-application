@@ -47,8 +47,49 @@
         </x-ui.search-filter>
 
         <!-- Audit Log Table -->
+        <!-- Audit Log: Mobile Cards + Desktop Table -->
         <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-xs">
-            <div class="overflow-x-auto">
+            <!-- Mobile Card View (< md) -->
+            <div class="md:hidden divide-y divide-slate-100 dark:divide-slate-800">
+                @forelse($logs as $log)
+                    <div class="p-4 space-y-2.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md font-mono text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                                {{ $log->event }}
+                            </span>
+                            <span class="font-mono text-[11px] text-slate-400">
+                                {{ $log->created_at->format('Y-m-d H:i') }}
+                            </span>
+                        </div>
+
+                        <div class="text-xs">
+                            <span class="text-slate-400">Target / Actor: </span>
+                            <span class="font-bold text-slate-900 dark:text-slate-100">{{ $log->customer ? $log->customer->name : 'System / Global' }}</span>
+                        </div>
+
+                        @if(!empty($log->details))
+                            <div class="p-2 rounded-lg bg-slate-50 dark:bg-slate-800/60 font-mono text-[10px] text-slate-600 dark:text-slate-400 break-all">
+                                {{ json_encode($log->details) }}
+                            </div>
+                        @endif
+
+                        <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                            <span class="flex items-center gap-1 font-mono">
+                                <i data-lucide="globe" class="w-3 h-3"></i>
+                                {{ $log->ip_address ?? '127.0.0.1' }}
+                            </span>
+                        </div>
+                    </div>
+                @empty
+                    <div class="p-8 text-center text-slate-400">
+                        <i data-lucide="file-check" class="w-8 h-8 mx-auto mb-2 text-slate-300 dark:text-slate-600"></i>
+                        <p class="text-sm font-semibold">No audit logs found</p>
+                    </div>
+                @endforelse
+            </div>
+
+            <!-- Desktop Table View (hidden on mobile) -->
+            <div class="hidden md:block overflow-x-auto">
                 <table class="w-full text-left text-xs sm:text-sm">
                     <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 uppercase font-semibold text-[11px] border-b border-slate-200/80 dark:border-slate-800">
                         <tr>

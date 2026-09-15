@@ -111,7 +111,7 @@
             <div class="flex items-center justify-between h-16 sm:h-[68px] gap-2.5 sm:gap-4">
                 
                 <!-- Left: Hamburger (Mobile) + Desktop Sidebar Toggle + Brand Identity -->
-                <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+                <div class="flex items-center gap-2 sm:gap-4 min-w-0">
                     <!-- Mobile Hamburger -->
                     <button
                         type="button"
@@ -135,15 +135,15 @@
                     </button>
 
                     <!-- Brand Mark -->
-                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 group shrink-0">
-                        <div class="relative w-9.5 h-9.5 sm:w-10.5 sm:h-10.5 rounded-2xl bg-gradient-to-tr from-rose-600 via-rose-700 to-red-800 flex items-center justify-center text-white shadow-md shadow-rose-950/20 dark:shadow-rose-950/60 group-hover:scale-105 transition-transform shrink-0 ring-1 ring-rose-500/40">
-                            <i data-lucide="shield-alert" class="w-5 h-5 sm:w-5.5 sm:h-5.5"></i>
-                            <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-white dark:ring-slate-900 animate-pulse"></span>
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2 sm:gap-3 group shrink-0">
+                        <div class="relative w-8.5 h-8.5 sm:w-10.5 sm:h-10.5 rounded-2xl bg-gradient-to-tr from-rose-600 via-rose-700 to-red-800 flex items-center justify-center text-white shadow-md shadow-rose-950/20 dark:shadow-rose-950/60 group-hover:scale-105 transition-transform shrink-0 ring-1 ring-rose-500/40">
+                            <i data-lucide="shield-alert" class="w-4.5 h-4.5 sm:w-5.5 sm:h-5.5"></i>
+                            <span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-rose-500 ring-2 ring-white dark:ring-slate-900 animate-pulse"></span>
                         </div>
                         <div class="flex flex-col min-w-0">
-                            <div class="flex items-center gap-2 truncate">
+                            <div class="flex items-center gap-1.5 sm:gap-2">
                                 <span class="font-black text-sm sm:text-base text-slate-900 dark:text-white tracking-tight">BankFlow</span>
-                                <span class="text-[9px] uppercase font-mono font-black tracking-wider px-1.5 py-0.5 rounded bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-300 border border-rose-500/20 dark:border-rose-500/30 shrink-0">DEFENSE OPS</span>
+                                <span class="hidden xs:inline-block text-[9px] uppercase font-mono font-black tracking-wider px-1.5 py-0.5 rounded bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-300 border border-rose-500/20 dark:border-rose-500/30 shrink-0">OPS</span>
                             </div>
                             <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block truncate">Enterprise Clearing &amp; Fraud Telemetry</span>
                         </div>
@@ -420,7 +420,7 @@
 
         <!-- MAIN VIEWPORT CONTENT (Full Width Enterprise Layout) -->
         <div class="flex-1 flex flex-col min-w-0 w-full">
-            <main class="flex-1 w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-5 sm:py-7 pb-24 md:pb-10">
+            <main class="flex-1 w-full px-3 sm:px-6 lg:px-8 xl:px-10 py-4 sm:py-7 pb-28 sm:pb-24 lg:pb-12">
                 {{ $slot }}
             </main>
 

@@ -3,82 +3,90 @@
     <!-- ======================================================================
          1. HERO HEADER: EXECUTIVE DASHBOARD OVERVIEW
          ====================================================================== -->
-    <div class="mb-6 rounded-3xl bg-slate-900 border border-slate-800 text-white shadow-2xl p-5 sm:p-7 relative overflow-hidden animate__animated animate__fadeInDown">
+    <div class="mb-6 rounded-3xl bg-slate-900 border border-slate-800 text-white shadow-2xl p-4 sm:p-6 lg:p-7 relative overflow-hidden animate__animated animate__fadeInDown">
         <!-- Ambient decorative gradient orbs -->
         <div class="absolute -right-16 -top-16 w-64 h-64 bg-rose-600/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-5">
             <!-- Left Info -->
-            <div class="flex items-start sm:items-center gap-4">
-                <div class="relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-rose-600 via-rose-700 to-red-800 text-white flex items-center justify-center shrink-0 shadow-lg shadow-rose-950/60 ring-2 ring-rose-500/30">
-                    <i data-lucide="layout-dashboard" class="w-6 h-6 sm:w-7 sm:h-7"></i>
+            <div class="flex items-start sm:items-center gap-3 sm:gap-4">
+                <div class="relative w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-rose-600 via-rose-700 to-red-800 text-white flex items-center justify-center shrink-0 shadow-lg shadow-rose-950/60 ring-2 ring-rose-500/30">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 sm:w-7 sm:h-7"></i>
                     <span class="absolute -bottom-1 -right-1 flex h-3.5 w-3.5">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 ring-2 ring-slate-900"></span>
                     </span>
                 </div>
-                <div>
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">
-                            Executive Administration Dashboard
-                        </h1>
-                        <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-black uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                <div class="min-w-0 flex-1">
+                    <h1 class="text-base sm:text-xl lg:text-2xl font-black text-white tracking-tight leading-snug break-words">
+                        Executive Administration Dashboard
+                    </h1>
+                    <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap mt-1.5">
+                        <span class="px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-mono font-black uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/30 shrink-0">
                             FIPS 140-2 LEVEL 4
                         </span>
-                        <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                        <span class="px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1 shrink-0">
                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                             NSRC 997 DIRECT STREAM
                         </span>
                     </div>
-                    <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl leading-relaxed">
+                    <p class="text-xs text-slate-400 mt-1.5 max-w-2xl leading-relaxed hidden sm:block">
                         Real-time AML radar telemetry, continuous ISO 20022 clearing performance, account status containment, and BNM RMiT compliance posture.
                     </p>
                 </div>
             </div>
 
             <!-- Right Controls -->
-            <div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
+            <div class="flex items-center gap-2 sm:gap-2.5 flex-col xs:flex-row w-full lg:w-auto">
                 <a
                     href="{{ route('admin.parameters') }}"
-                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-bold border border-slate-700/80 transition-all cursor-pointer shadow-sm active:scale-95"
+                    class="w-full xs:w-auto inline-flex items-center justify-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-bold border border-slate-700/80 transition-all cursor-pointer shadow-sm active:scale-95"
                 >
-                    <i data-lucide="sliders" class="w-4 h-4 text-slate-400"></i>
+                    <i data-lucide="sliders" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400"></i>
                     <span>Parameters Hub</span>
                 </a>
                 <button
                     type="button"
                     onclick="window.executeUniversalKillSwitch()"
                     id="btn-admin-universal-kill"
-                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs font-black shadow-lg shadow-rose-900/40 border border-rose-500/40 transition-all cursor-pointer active:scale-95 group"
+                    class="w-full xs:w-auto inline-flex items-center justify-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs font-black shadow-lg shadow-rose-900/40 border border-rose-500/40 transition-all cursor-pointer active:scale-95 group"
                 >
-                    <i data-lucide="zap-off" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+                    <i data-lucide="zap-off" class="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:scale-110 transition-transform"></i>
                     <span>Universal Freeze Switch</span>
                 </button>
             </div>
         </div>
 
         <!-- Telemetry Pill Summary Strip -->
-        <div class="mt-5 pt-4 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-            <div class="flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
-                <span class="text-slate-400">Gateway Status:</span>
-                <span class="font-bold text-slate-200 font-mono">NOMINAL</span>
+        <div class="mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-slate-800/80 grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 text-[11px] sm:text-xs">
+            <div class="p-2 sm:p-0 rounded-xl sm:rounded-none bg-slate-800/40 sm:bg-transparent flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></div>
+                <div class="min-w-0">
+                    <span class="text-slate-400 block text-[10px] sm:inline sm:text-xs">Gateway: </span>
+                    <span class="font-bold text-slate-200 font-mono text-[11px] sm:text-xs">NOMINAL</span>
+                </div>
             </div>
-            <div class="flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
-                <span class="text-slate-400">Avg Settlement:</span>
-                <span class="font-bold text-slate-200 font-mono">48ms</span>
+            <div class="p-2 sm:p-0 rounded-xl sm:rounded-none bg-slate-800/40 sm:bg-transparent flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></div>
+                <div class="min-w-0">
+                    <span class="text-slate-400 block text-[10px] sm:inline sm:text-xs">Settlement: </span>
+                    <span class="font-bold text-slate-200 font-mono text-[11px] sm:text-xs">48ms</span>
+                </div>
             </div>
-            <div class="flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-rose-400 animate-pulse"></div>
-                <span class="text-slate-400">Flagged Flows:</span>
-                <span class="font-bold text-rose-400 font-mono">{{ $flaggedCount ?? 0 }} Alerts</span>
+            <div class="p-2 sm:p-0 rounded-xl sm:rounded-none bg-slate-800/40 sm:bg-transparent flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-rose-400 animate-pulse shrink-0"></div>
+                <div class="min-w-0">
+                    <span class="text-slate-400 block text-[10px] sm:inline sm:text-xs">Flagged: </span>
+                    <span class="font-bold text-rose-400 font-mono text-[11px] sm:text-xs">{{ $flaggedCount ?? 0 }} Alerts</span>
+                </div>
             </div>
-            <div class="flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-indigo-400"></div>
-                <span class="text-slate-400">Audit Ledger:</span>
-                <span class="font-bold text-slate-200 font-mono">100% VERIFIED</span>
+            <div class="p-2 sm:p-0 rounded-xl sm:rounded-none bg-slate-800/40 sm:bg-transparent flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-indigo-400 shrink-0"></div>
+                <div class="min-w-0">
+                    <span class="text-slate-400 block text-[10px] sm:inline sm:text-xs">Ledger: </span>
+                    <span class="font-bold text-slate-200 font-mono text-[11px] sm:text-xs">100% VERIFIED</span>
+                </div>
             </div>
         </div>
     </div>
@@ -197,18 +205,18 @@
             <span class="text-xs font-mono text-slate-400">Heartbeat: 10s &bull; Auto-Failover Armed</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             @foreach($paymentRails as $rail)
-                <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-mono font-bold text-slate-500 dark:text-slate-400">{{ $rail['code'] }}</span>
+                <div class="p-3.5 sm:p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition-all">
+                    <div class="flex items-center justify-between mb-1.5 sm:mb-2">
+                        <span class="text-[10px] sm:text-xs font-mono font-bold text-slate-500 dark:text-slate-400">{{ $rail['code'] }}</span>
                         @if($rail['status'] === 'operational')
-                            <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300/40 dark:border-emerald-800">
+                            <span class="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300/40 dark:border-emerald-800">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                                 ACTIVE
                             </span>
                         @else
-                            <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-300/40 dark:border-amber-800">
+                            <span class="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-300/40 dark:border-amber-800">
                                 STANDBY
                             </span>
                         @endif
@@ -216,15 +224,15 @@
                     <h4 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 leading-tight">
                         {{ $rail['name'] }}
                     </h4>
-                    <p class="text-[11px] text-slate-400 font-mono mt-1 truncate">
+                    <p class="text-[10px] sm:text-[11px] text-slate-400 font-mono mt-1 truncate">
                         {{ $rail['iso_version'] }}
                     </p>
 
-                    <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px]">
+                    <div class="mt-2.5 sm:mt-3 pt-2 sm:pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[10px] sm:text-[11px]">
                         <span class="text-slate-500 dark:text-slate-400">Latency:</span>
                         <span class="font-mono font-bold text-emerald-600 dark:text-emerald-400">{{ $rail['latency'] }}</span>
                     </div>
-                    <div class="mt-1 flex items-center justify-between text-[11px]">
+                    <div class="mt-1 flex items-center justify-between text-[10px] sm:text-[11px]">
                         <span class="text-slate-500 dark:text-slate-400">Circuit Breaker:</span>
                         <span class="font-mono font-bold text-slate-700 dark:text-slate-300">{{ $rail['circuit_breaker'] }}</span>
                     </div>
@@ -263,8 +271,64 @@
                     </a>
                 </div>
 
-                <!-- Table Content -->
-                <div class="overflow-x-auto">
+                <!-- Mobile Responsive Cards View (< md devices) -->
+                <div class="md:hidden divide-y divide-slate-100 dark:divide-slate-800 p-2">
+                    @if(isset($flaggedTransactions) && $flaggedTransactions->isNotEmpty())
+                        @foreach($flaggedTransactions as $tx)
+                            <div class="p-3.5 space-y-2.5 rounded-2xl bg-slate-50/50 dark:bg-slate-800/30 mb-2 border border-slate-100 dark:border-slate-800">
+                                <div class="flex items-start justify-between gap-2">
+                                    <div class="min-w-0">
+                                        <p class="font-bold text-xs text-slate-900 dark:text-slate-100 truncate">
+                                            {{ $tx->account && $tx->account->customer ? $tx->account->customer->name : 'Registered Payer' }}
+                                        </p>
+                                        <p class="text-[10px] text-slate-400 font-mono mt-0.5">
+                                            &rarr; {{ $tx->recipient_name ?? ($tx->description ?? 'Counterparty') }}
+                                        </p>
+                                    </div>
+                                    <span class="inline-flex items-center gap-1 text-[9px] font-bold px-2 py-0.5 rounded-md bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900 shrink-0">
+                                        <i data-lucide="alert-triangle" class="w-3 h-3"></i>
+                                        {{ $tx->amount >= 10000 ? 'High Value' : 'Anomaly' }}
+                                    </span>
+                                </div>
+
+                                <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100 dark:border-slate-800">
+                                    <div>
+                                        <span class="font-black text-rose-600 dark:text-rose-400 font-mono text-sm">
+                                            RM {{ number_format($tx->amount, 2) }}
+                                        </span>
+                                        <span class="text-[10px] text-slate-400 font-mono ml-1.5 uppercase">
+                                            {{ $tx->type ?? 'DUITNOW' }}
+                                        </span>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400 font-mono">
+                                        {{ $tx->created_at ? $tx->created_at->format('h:i:s A') : 'Recent' }}
+                                    </span>
+                                </div>
+
+                                <div class="flex items-center justify-between gap-2 pt-1">
+                                    <span class="text-[10px] text-slate-400 font-mono truncate">
+                                        Ref: {{ $tx->reference_number }}
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onclick="window.inspectTransactionDetail('{{ $tx->reference_number }}', '{{ number_format($tx->amount, 2) }}', '{{ $tx->recipient_name ?? 'Counterparty' }}')"
+                                        class="px-3 py-1 text-[11px] font-bold rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 text-slate-700 dark:text-slate-300 shadow-2xs cursor-pointer"
+                                    >
+                                        Inspect
+                                    </button>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="py-6 text-center text-slate-400">
+                            <i data-lucide="shield-check" class="w-7 h-7 text-emerald-500 mx-auto mb-1.5 opacity-80"></i>
+                            <p class="text-xs font-semibold">No high-risk transactions flagged</p>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Desktop Table Content (md+ devices) -->
+                <div class="hidden md:block overflow-x-auto">
                     <table class="w-full text-left text-xs sm:text-sm">
                         <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 uppercase font-semibold text-[11px] border-b border-slate-200/80 dark:border-slate-800">
                             <tr>
