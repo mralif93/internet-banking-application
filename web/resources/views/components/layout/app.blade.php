@@ -23,6 +23,9 @@
                 } else {
                     document.documentElement.classList.remove('dark');
                 }
+
+                const storedColor = localStorage.getItem('app-color-theme') || 'emerald';
+                document.documentElement.setAttribute('data-color-theme', storedColor);
             } catch (_) {}
         })();
     </script>
