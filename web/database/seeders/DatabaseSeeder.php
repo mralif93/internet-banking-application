@@ -21,6 +21,33 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // 0. Seed Admin Users
+        User::updateOrCreate(
+            ['email' => 'admin@bankflow.my'],
+            [
+                'name' => 'Farhan Azman',
+                'username' => 'farhan_azman',
+                'password' => Hash::make('password123'),
+                'role' => 'superadmin',
+                'department' => 'Fraud & Risk Operations',
+                'employee_id' => 'EMP-BF-001',
+                'is_active' => true,
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'analyst@bankflow.my'],
+            [
+                'name' => 'Nurul Huda',
+                'username' => 'nurul_huda',
+                'password' => Hash::make('password123'),
+                'role' => 'fraud_analyst',
+                'department' => 'AML Compliance & Investigation',
+                'employee_id' => 'EMP-BF-042',
+                'is_active' => true,
+            ]
+        );
+
         // 1. Seed Customer
         $customer = Customer::updateOrCreate(
             ['username' => 'daniel_alif'],

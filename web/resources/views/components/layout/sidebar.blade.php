@@ -96,6 +96,18 @@
                             <span>UI Kit Showcase</span>
                         </a>
                     </li>
+                    <li>
+                        <a
+                            href="{{ route('admin.dashboard') }}"
+                            onclick="window.toggleMobileDrawer()"
+                            class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold text-rose-600 dark:text-rose-400 bg-rose-50/70 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors"
+                        >
+                            <svg class="w-4 h-4 text-rose-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                            </svg>
+                            <span>Admin Portal</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 

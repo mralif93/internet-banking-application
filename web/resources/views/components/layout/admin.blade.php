@@ -95,15 +95,30 @@
                         DEFCON: NORMAL
                     </div>
 
-                    <!-- Admin User Pill -->
+                    <!-- Admin User Pill & Logout -->
+                    @php
+                        $adminUser = Auth::guard('web')->user();
+                        $initials = $adminUser ? strtoupper(substr($adminUser->name, 0, 2)) : 'AD';
+                    @endphp
                     <div class="flex items-center gap-2 pl-2 border-l border-slate-800">
                         <div class="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center font-bold text-xs shadow-xs">
-                            FA
+                            {{ $initials }}
                         </div>
                         <div class="hidden lg:block text-left">
-                            <span class="block text-xs font-bold text-white leading-tight">Farhan Azman</span>
-                            <span class="block text-[10px] text-rose-300">Lead Fraud Operations</span>
+                            <span class="block text-xs font-bold text-white leading-tight">{{ $adminUser->name ?? 'Enterprise Admin' }}</span>
+                            <span class="block text-[10px] text-rose-300">{{ $adminUser->department ?? 'Fraud Operations' }}</span>
                         </div>
+                        <form method="POST" action="{{ route('admin.logout') }}" class="inline-block ml-1">
+                            @csrf
+                            <button
+                                type="submit"
+                                title="Terminate Clearance Session"
+                                class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition-colors cursor-pointer"
+                                aria-label="Sign out admin session"
+                            >
+                                <i data-lucide="log-out" class="w-4 h-4"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

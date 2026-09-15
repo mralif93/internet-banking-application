@@ -79,24 +79,32 @@ Route::get('/staff', function () {
     return view('staff');
 })->name('staff');
 
-// Admin Portal Routes
+// Admin Portal Authentication & Management Routes
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
-    
-    // System Parameters
-    Route::get('/parameters', [\App\Http\Controllers\Admin\ParameterController::class, 'index'])->name('parameters');
-    Route::post('/parameters', [\App\Http\Controllers\Admin\ParameterController::class, 'update'])->name('parameters.update');
-    Route::post('/parameters/biller', [\App\Http\Controllers\Admin\ParameterController::class, 'storeBiller'])->name('parameters.biller.store');
-    Route::post('/parameters/biller/{id}/toggle', [\App\Http\Controllers\Admin\ParameterController::class, 'toggleBiller'])->name('parameters.biller.toggle');
-    Route::post('/parameters/bank', [\App\Http\Controllers\Admin\ParameterController::class, 'storeBank'])->name('parameters.bank.store');
-    Route::post('/parameters/bank/{id}/toggle', [\App\Http\Controllers\Admin\ParameterController::class, 'toggleBank'])->name('parameters.bank.toggle');
+    // Admin Guest Routes
+    Route::get('/login', [\App\Http\Controllers\Admin\AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [\App\Http\Controllers\Admin\AuthController::class, 'login'])->name('login.submit');
+    Route::post('/logout', [\App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('logout');
 
-    // Customer Account Controls
-    Route::get('/customers', [\App\Http\Controllers\Admin\CustomerManagementController::class, 'index'])->name('customers');
-    Route::post('/customers/{id}/toggle-status', [\App\Http\Controllers\Admin\CustomerManagementController::class, 'toggleStatus'])->name('customers.toggle-status');
+    // Admin Protected Routes
+    Route::middleware(['auth:web'])->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+        
+        // System Parameters
+        Route::get('/parameters', [\App\Http\Controllers\Admin\ParameterController::class, 'index'])->name('parameters');
+        Route::post('/parameters', [\App\Http\Controllers\Admin\ParameterController::class, 'update'])->name('parameters.update');
+        Route::post('/parameters/biller', [\App\Http\Controllers\Admin\ParameterController::class, 'storeBiller'])->name('parameters.biller.store');
+        Route::post('/parameters/biller/{id}/toggle', [\App\Http\Controllers\Admin\ParameterController::class, 'toggleBiller'])->name('parameters.biller.toggle');
+        Route::post('/parameters/bank', [\App\Http\Controllers\Admin\ParameterController::class, 'storeBank'])->name('parameters.bank.store');
+        Route::post('/parameters/bank/{id}/toggle', [\App\Http\Controllers\Admin\ParameterController::class, 'toggleBank'])->name('parameters.bank.toggle');
 
-    // Immutable Audit Trail
-    Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs');
+        // Customer Account Controls
+        Route::get('/customers', [\App\Http\Controllers\Admin\CustomerManagementController::class, 'index'])->name('customers');
+        Route::post('/customers/{id}/toggle-status', [\App\Http\Controllers\Admin\CustomerManagementController::class, 'toggleStatus'])->name('customers.toggle-status');
+
+        // Immutable Audit Trail
+        Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs');
+    });
 });
 
 Route::get('/ui-kit', function () {

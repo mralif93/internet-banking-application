@@ -25,4 +25,21 @@ class AuditLog extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    /**
+     * Record an immutable audit log entry.
+     */
+    public static function record(string $event, ?string $severity = 'info', ?string $actor = null, ?string $ipAddress = null, ?array $metadata = null, ?int $customerId = null): self
+    {
+        return self::create([
+            'customer_id' => $customerId,
+            'event' => $event,
+            'ip_address' => $ipAddress ?? request()?->ip(),
+            'user_agent' => request()?->userAgent(),
+            'payload' => array_merge([
+                'severity' => $severity,
+                'actor' => $actor,
+            ], $metadata ?? []),
+        ]);
+    }
 }

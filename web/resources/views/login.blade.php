@@ -170,6 +170,13 @@
                             <i data-lucide="arrow-right" class="w-3 h-3 inline-block"></i>
                         </a>
                     </div>
+                    <div class="mt-2.5 pt-2.5 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[10px]">
+                        <span class="text-slate-400">Bank Operations & Risk Staff:</span>
+                        <a href="{{ route('admin.login') }}" class="font-bold text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1">
+                            <i data-lucide="lock" class="w-3 h-3 inline-block"></i>
+                            <span>Enterprise Admin Login &rarr;</span>
+                        </a>
+                    </div>
                 </x-slot:footer>
             </x-ui.card>
 

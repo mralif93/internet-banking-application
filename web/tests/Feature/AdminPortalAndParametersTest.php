@@ -14,10 +14,50 @@ class AdminPortalAndParametersTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected \App\Models\User $admin;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->seed(DatabaseSeeder::class);
+        $this->admin = \App\Models\User::where('email', 'admin@bankflow.my')->first();
+        $this->actingAs($this->admin, 'web');
+    }
+
+    public function test_unauthenticated_user_cannot_access_admin_portal(): void
+    {
+        \Illuminate\Support\Facades\Auth::guard('web')->logout();
+
+        $response = $this->get('/admin');
+        $response->assertRedirect('/admin/login');
+    }
+
+    public function test_admin_can_login_with_valid_credentials(): void
+    {
+        \Illuminate\Support\Facades\Auth::guard('web')->logout();
+
+        $response = $this->post('/admin/login', [
+            'login' => 'farhan_azman',
+            'password' => 'password123',
+        ]);
+
+        $response->assertRedirect('/admin');
+        $this->assertAuthenticatedAs($this->admin, 'web');
+
+        $this->assertDatabaseHas('audit_logs', [
+            'event' => 'ADMIN_LOGIN_SUCCESS',
+        ]);
+    }
+
+    public function test_admin_can_logout(): void
+    {
+        $response = $this->post('/admin/logout');
+        $response->assertRedirect('/admin/login');
+        $this->assertGuest('web');
+
+        $this->assertDatabaseHas('audit_logs', [
+            'event' => 'ADMIN_LOGOUT',
+        ]);
     }
 
     public function test_admin_dashboard_renders_successfully(): void
