@@ -21,8 +21,9 @@ class ParameterController extends Controller
     {
         $parameters = $this->parameterService->getAllGrouped();
         $billers = JompayBiller::orderBy('biller_code')->get();
+        $banks = \App\Models\Bank::orderBy('display_order')->orderBy('short_name')->get();
 
-        return view('admin.parameters', compact('parameters', 'billers'));
+        return view('admin.parameters', compact('parameters', 'billers', 'banks'));
     }
 
     /**
@@ -96,6 +97,54 @@ class ParameterController extends Controller
             'success' => true,
             'message' => $biller->is_active ? 'Biller enabled.' : 'Biller disabled.',
             'is_active' => $biller->is_active,
+        ]);
+    }
+
+    /**
+     * Register a new Bank Institution
+     */
+    public function storeBank(Request $request)
+    {
+        $validated = $request->validate([
+            'bank_code' => 'required|string|max:20|unique:banks,bank_code',
+            'bank_name' => 'required|string|max:150',
+            'short_name' => 'required|string|max:50',
+            'swift_code' => 'nullable|string|max:20',
+            'display_order' => 'nullable|integer',
+        ]);
+
+        $bank = \App\Models\Bank::create([
+            'bank_code' => strtoupper($validated['bank_code']),
+            'bank_name' => $validated['bank_name'],
+            'short_name' => $validated['short_name'],
+            'swift_code' => !empty($validated['swift_code']) ? strtoupper($validated['swift_code']) : null,
+            'display_order' => $validated['display_order'] ?? 20,
+            'is_duitnow_active' => true,
+            'is_ibg_active' => true,
+            'is_active' => true,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Banking institution registered successfully.',
+            'data' => $bank,
+        ], 201);
+    }
+
+    /**
+     * Toggle Bank Institution active state or individual rails
+     */
+    public function toggleBank($id)
+    {
+        $bank = \App\Models\Bank::findOrFail($id);
+        $bank->update([
+            'is_active' => !$bank->is_active,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => $bank->is_active ? "{$bank->short_name} routing enabled." : "{$bank->short_name} routing disabled.",
+            'is_active' => $bank->is_active,
         ]);
     }
 }

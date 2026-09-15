@@ -88,6 +88,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/parameters', [\App\Http\Controllers\Admin\ParameterController::class, 'update'])->name('parameters.update');
     Route::post('/parameters/biller', [\App\Http\Controllers\Admin\ParameterController::class, 'storeBiller'])->name('parameters.biller.store');
     Route::post('/parameters/biller/{id}/toggle', [\App\Http\Controllers\Admin\ParameterController::class, 'toggleBiller'])->name('parameters.biller.toggle');
+    Route::post('/parameters/bank', [\App\Http\Controllers\Admin\ParameterController::class, 'storeBank'])->name('parameters.bank.store');
+    Route::post('/parameters/bank/{id}/toggle', [\App\Http\Controllers\Admin\ParameterController::class, 'toggleBank'])->name('parameters.bank.toggle');
 
     // Customer Account Controls
     Route::get('/customers', [\App\Http\Controllers\Admin\CustomerManagementController::class, 'index'])->name('customers');

@@ -128,4 +128,44 @@ class AdminPortalAndParametersTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('WORM Compliance Audit Trail');
     }
+
+    public function test_admin_can_register_and_toggle_bank_institutions(): void
+    {
+        // 1. Register a new bank
+        $response = $this->postJson('/admin/parameters/bank', [
+            'bank_code' => 'TEST_BANK',
+            'bank_name' => 'Bank of Digital Innovation Malaysia Berhad',
+            'short_name' => 'BDIM',
+            'swift_code' => 'BDIMMYKL',
+        ]);
+
+        $response->assertStatus(201);
+        $response->assertJson(['success' => true]);
+
+        $this->assertDatabaseHas('banks', [
+            'bank_code' => 'TEST_BANK',
+            'short_name' => 'BDIM',
+            'is_active' => true,
+        ]);
+
+        $bank = \App\Models\Bank::where('bank_code', 'TEST_BANK')->first();
+        $this->assertNotNull($bank);
+
+        // 2. Toggle Bank State (take offline)
+        $toggleOffResponse = $this->postJson("/admin/parameters/bank/{$bank->id}/toggle");
+        $toggleOffResponse->assertStatus(200);
+        $toggleOffResponse->assertJson(['is_active' => false]);
+
+        $bank->refresh();
+        $this->assertFalse($bank->is_active);
+
+        // 3. Toggle Bank State back online
+        $toggleOnResponse = $this->postJson("/admin/parameters/bank/{$bank->id}/toggle");
+        $toggleOnResponse->assertStatus(200);
+        $toggleOnResponse->assertJson(['is_active' => true]);
+
+        $bank->refresh();
+        $this->assertTrue($bank->is_active);
+    }
 }
+

@@ -320,17 +320,94 @@
         </div>
     </div>
 
-    <!-- Modal: Register New JomPAY Biller -->
+    <!-- Card 6: PayNet Participating Banks (Online Banking Directory) Table -->
+    <div class="mt-8 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                    <i data-lucide="landmark" class="w-4 h-4 text-emerald-500"></i>
+                    PayNet Participating Banks &amp; Online Banking Directory
+                </h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Manage approved interbank routing destinations, SWIFT/BIC codes, and maintenance switches.</p>
+            </div>
+            <button
+                type="button"
+                onclick="window.openAddBankModal()"
+                class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all cursor-pointer shadow-sm shadow-emerald-600/20"
+            >
+                <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                <span>Register New Bank</span>
+            </button>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-xs">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs sm:text-sm">
+                    <thead class="bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 uppercase font-semibold text-[11px] border-b border-slate-200/80 dark:border-slate-800">
+                        <tr>
+                            <th class="px-4 py-3">Code / SWIFT</th>
+                            <th class="px-4 py-3">Institution Name</th>
+                            <th class="px-4 py-3">Short Brand</th>
+                            <th class="px-4 py-3">Routing Rails</th>
+                            <th class="px-4 py-3">Status</th>
+                            <th class="px-4 py-3 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+                        @if(isset($banks))
+                            @foreach($banks as $b)
+                                <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
+                                    <td class="px-4 py-3 font-mono text-xs">
+                                        <div class="font-bold text-slate-900 dark:text-slate-100">{{ $b->bank_code }}</div>
+                                        <div class="text-[10px] text-slate-400">{{ $b->swift_code ?? '-' }}</div>
+                                    </td>
+                                    <td class="px-4 py-3 font-semibold text-slate-900 dark:text-slate-100">
+                                        {{ $b->bank_name }}
+                                    </td>
+                                    <td class="px-4 py-3 font-medium text-emerald-600 dark:text-emerald-400">
+                                        {{ $b->short_name }}
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="flex items-center gap-1.5 flex-wrap">
+                                            <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-pink-50 text-pink-700 dark:bg-pink-950/60 dark:text-pink-300 border border-pink-200/60">DuitNow</span>
+                                            <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200/60">IBG</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold {{ $b->is_active ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400' }}">
+                                            <span class="w-1.5 h-1.5 rounded-full {{ $b->is_active ? 'bg-emerald-500' : 'bg-slate-400' }}"></span>
+                                            {{ $b->is_active ? 'Active' : 'Offline / Hold' }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3 text-right">
+                                        <button
+                                            type="button"
+                                            onclick="window.toggleBankState({{ $b->id }})"
+                                            class="px-2.5 py-1 text-[11px] font-semibold rounded-lg border {{ $b->is_active ? 'border-rose-200 text-rose-600 hover:bg-rose-50 dark:border-rose-900/60 dark:text-rose-400' : 'border-emerald-200 text-emerald-600 hover:bg-emerald-50 dark:border-emerald-900/60 dark:text-emerald-400' }} cursor-pointer transition-colors"
+                                        >
+                                            {{ $b->is_active ? 'Take Offline' : 'Enable Rail' }}
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add JomPAY Biller -->
     <div id="add-biller-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs hidden">
         <div class="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl max-w-md w-full p-5 sm:p-6 space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                    <div class="w-8 h-8 rounded-xl bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 flex items-center justify-center">
                         <i data-lucide="receipt" class="w-4 h-4"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100">Register JomPAY Biller</h3>
-                        <p class="text-[11px] text-slate-400">PayNet National Bill Clearing Directory</p>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100">Add JomPAY Biller</h3>
+                        <p class="text-[11px] text-slate-400">PayNet National Invoicing Directory</p>
                     </div>
                 </div>
                 <button type="button" onclick="window.closeAddBillerModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
@@ -339,38 +416,92 @@
             </div>
 
             <form id="add-biller-form" onsubmit="window.submitAddBiller(event)" class="space-y-3.5">
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Biller Code</label>
-                    <input type="text" id="biller-code-input" required placeholder="e.g. 5454" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-mono font-bold focus:outline-rose-500">
+                <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Biller Code</label>
+                        <input type="text" id="biller-code-input" required placeholder="e.g. 5454" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-mono font-bold focus:outline-red-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Category</label>
+                        <select id="biller-cat-input" required class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-red-500">
+                            <option value="Utilities">Utilities</option>
+                            <option value="Telecommunication">Telecommunication</option>
+                            <option value="Assessment & Tax">Assessment & Tax</option>
+                            <option value="Education">Education</option>
+                            <option value="Insurance / Takaful">Insurance / Takaful</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Biller Organization Name</label>
-                    <input type="text" id="biller-name-input" required placeholder="e.g. Indah Water Konsortium" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:outline-rose-500">
+                    <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Biller Registered Name</label>
+                    <input type="text" id="biller-name-input" required placeholder="e.g. Tenaga Nasional Berhad" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:outline-red-500">
                 </div>
 
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Category</label>
-                    <select id="biller-cat-input" required class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:outline-rose-500">
-                        <option value="Utilities">Utilities</option>
-                        <option value="Telecommunications">Telecommunications</option>
-                        <option value="Assessment & Municipal">Assessment &amp; Municipal</option>
-                        <option value="Education">Education</option>
-                        <option value="Insurance & Takaful">Insurance &amp; Takaful</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Ref-1 Field Label</label>
-                    <input type="text" id="biller-ref1-input" required placeholder="e.g. Account Number / Customer ID" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:outline-rose-500">
+                    <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Ref-1 Label Name</label>
+                    <input type="text" id="biller-ref1-input" required placeholder="e.g. Electricity Account No" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:outline-red-500">
                 </div>
 
                 <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
                     <button type="button" onclick="window.closeAddBillerModal()" class="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 cursor-pointer">
                         Cancel
                     </button>
-                    <button type="submit" id="save-biller-btn" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold cursor-pointer">
-                        Register Biller
+                    <button type="submit" id="save-biller-btn" class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold cursor-pointer shadow-xs shadow-red-600/20">
+                        Save Biller
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Register New Bank -->
+    <div id="add-bank-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs hidden">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl max-w-md w-full p-5 sm:p-6 space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                        <i data-lucide="landmark" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100">Register Bank Institution</h3>
+                        <p class="text-[11px] text-slate-400">PayNet MEPS / DuitNow Interbank Routing</p>
+                    </div>
+                </div>
+                <button type="button" onclick="window.closeAddBankModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <form id="add-bank-form" onsubmit="window.submitAddBank(event)" class="space-y-3.5">
+                <div class="grid grid-cols-2 gap-2.5">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Bank Code</label>
+                        <input type="text" id="bank-code-input" required placeholder="e.g. BSN" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-mono font-bold focus:outline-emerald-500 uppercase">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">SWIFT / BIC</label>
+                        <input type="text" id="bank-swift-input" placeholder="e.g. BSNAMYKL" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-mono focus:outline-emerald-500 uppercase">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Full Legal Institution Name</label>
+                    <input type="text" id="bank-name-input" required placeholder="e.g. Bank Simpanan Nasional" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:outline-emerald-500">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">Short Brand Name (Display in UI)</label>
+                    <input type="text" id="bank-short-input" required placeholder="e.g. BSN" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 font-medium focus:outline-emerald-500">
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+                    <button type="button" onclick="window.closeAddBankModal()" class="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 cursor-pointer">
+                        Cancel
+                    </button>
+                    <button type="submit" id="save-bank-btn" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold cursor-pointer shadow-xs shadow-emerald-600/20">
+                        Register Bank
                     </button>
                 </div>
             </form>
@@ -466,6 +597,68 @@
 
         window.toggleBillerState = function(id) {
             fetch(`/admin/parameters/biller/${id}/toggle`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+            })
+            .then(res => res.json())
+            .then(data => {
+                window.location.reload();
+            });
+        };
+
+        // Bank Modal & Handlers
+        window.openAddBankModal = function() {
+            document.getElementById('add-bank-modal').classList.remove('hidden');
+        };
+
+        window.closeAddBankModal = function() {
+            document.getElementById('add-bank-modal').classList.add('hidden');
+            document.getElementById('add-bank-form').reset();
+        };
+
+        window.submitAddBank = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('save-bank-btn');
+            btn.disabled = true;
+
+            const payload = {
+                bank_code: document.getElementById('bank-code-input').value,
+                swift_code: document.getElementById('bank-swift-input').value,
+                bank_name: document.getElementById('bank-name-input').value,
+                short_name: document.getElementById('bank-short-input').value,
+            };
+
+            fetch('{{ route('admin.parameters.bank.store') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify(payload),
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Bank registered successfully.');
+                    window.location.reload();
+                } else {
+                    alert(data.message || 'Failed to register bank.');
+                    btn.disabled = false;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Network error while saving bank.');
+                btn.disabled = false;
+            });
+        };
+
+        window.toggleBankState = function(id) {
+            fetch(`/admin/parameters/bank/${id}/toggle`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

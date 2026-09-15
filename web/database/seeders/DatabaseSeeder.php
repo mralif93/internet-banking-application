@@ -132,6 +132,34 @@ class DatabaseSeeder extends Seeder
             JompayBiller::updateOrCreate(['biller_code' => $b['biller_code']], $b);
         }
 
+        // 3b. Online Banking Institutions (PayNet DuitNow Participating Banks)
+        $banks = [
+            ['bank_code' => 'MBB', 'short_name' => 'Maybank', 'bank_name' => 'Malayan Banking Berhad', 'swift_code' => 'MBBEMYKL', 'display_order' => 1],
+            ['bank_code' => 'CIMB', 'short_name' => 'CIMB Bank', 'bank_name' => 'CIMB Bank Berhad', 'swift_code' => 'CIBBMYKL', 'display_order' => 2],
+            ['bank_code' => 'PBB', 'short_name' => 'Public Bank', 'bank_name' => 'Public Bank Berhad', 'swift_code' => 'PBBEMYKL', 'display_order' => 3],
+            ['bank_code' => 'RHB', 'short_name' => 'RHB Bank', 'bank_name' => 'RHB Bank Berhad', 'swift_code' => 'RHBBMYKL', 'display_order' => 4],
+            ['bank_code' => 'HLB', 'short_name' => 'Hong Leong Bank', 'bank_name' => 'Hong Leong Bank Berhad', 'swift_code' => 'HLBBMYKL', 'display_order' => 5],
+            ['bank_code' => 'AMB', 'short_name' => 'AmBank', 'bank_name' => 'AmBank (M) Berhad', 'swift_code' => 'ARBKMYKL', 'display_order' => 6],
+            ['bank_code' => 'BIMB', 'short_name' => 'Bank Islam', 'bank_name' => 'Bank Islam Malaysia Berhad', 'swift_code' => 'BIMBMYKL', 'display_order' => 7],
+            ['bank_code' => 'BMMB', 'short_name' => 'Bank Muamalat', 'bank_name' => 'Bank Muamalat Malaysia Berhad', 'swift_code' => 'BMMBMYKL', 'display_order' => 8],
+            ['bank_code' => 'AFFIN', 'short_name' => 'Affin Bank', 'bank_name' => 'Affin Bank Berhad', 'swift_code' => 'ABBBMYKL', 'display_order' => 9],
+            ['bank_code' => 'ABMB', 'short_name' => 'Alliance Bank', 'bank_name' => 'Alliance Bank Malaysia Berhad', 'swift_code' => 'MACBMYKL', 'display_order' => 10],
+            ['bank_code' => 'SCB', 'short_name' => 'Standard Chartered', 'bank_name' => 'Standard Chartered Bank Malaysia Berhad', 'swift_code' => 'SCBLMYKX', 'display_order' => 11],
+            ['bank_code' => 'HSBC', 'short_name' => 'HSBC Bank', 'bank_name' => 'HSBC Bank Malaysia Berhad', 'swift_code' => 'HSBCMYKL', 'display_order' => 12],
+            ['bank_code' => 'OCBC', 'short_name' => 'OCBC Bank', 'bank_name' => 'OCBC Bank (Malaysia) Berhad', 'swift_code' => 'OCBCMYKL', 'display_order' => 13],
+            ['bank_code' => 'UOB', 'short_name' => 'UOB Bank', 'bank_name' => 'United Overseas Bank (Malaysia) Bhd', 'swift_code' => 'UOVBMYKL', 'display_order' => 14],
+            ['bank_code' => 'AGRO', 'short_name' => 'Agrobank', 'bank_name' => 'Bank Pertanian Malaysia Berhad', 'swift_code' => 'AGROMYKL', 'display_order' => 15],
+            ['bank_code' => 'BSN', 'short_name' => 'BSN', 'bank_name' => 'Bank Simpanan Nasional', 'swift_code' => 'BSNAMYKL', 'display_order' => 16],
+            ['bank_code' => 'BKRM', 'short_name' => 'Bank Rakyat', 'bank_name' => 'Bank Kerjasama Rakyat Malaysia Berhad', 'swift_code' => 'BKRMMYKL', 'display_order' => 17],
+        ];
+
+        foreach ($banks as $bnk) {
+            \App\Models\Bank::updateOrCreate(
+                ['bank_code' => $bnk['bank_code']],
+                array_merge($bnk, ['is_duitnow_active' => true, 'is_ibg_active' => true, 'is_active' => true])
+            );
+        }
+
         // 4. Beneficiaries
         $beneficiaries = [
             [

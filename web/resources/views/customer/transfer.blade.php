@@ -368,22 +368,25 @@ $customer = Auth::guard('customer')->user() ?? (object)[
                     <div id="proxy-bank-section" class="space-y-3.5 hidden">
                         <div>
                             @php
-                            $bankOptions = [
-                                ['value' => 'Maybank', 'label' => 'Malayan Banking Berhad', 'sub' => 'Maybank • Instant Transfer / DuitNow'],
-                                ['value' => 'CIMB Bank', 'label' => 'CIMB Bank Berhad', 'sub' => 'CIMB Clicks • Instant Transfer / DuitNow'],
-                                ['value' => 'Public Bank', 'label' => 'Public Bank Berhad', 'sub' => 'PBe • Instant Transfer / DuitNow'],
-                                ['value' => 'RHB Bank', 'label' => 'RHB Bank Berhad', 'sub' => 'RHB Now • Instant Transfer / DuitNow'],
-                                ['value' => 'Hong Leong Bank', 'label' => 'Hong Leong Bank Berhad', 'sub' => 'HLB Connect • Instant Transfer / DuitNow'],
-                                ['value' => 'AmBank', 'label' => 'AmBank (M) Berhad', 'sub' => 'AmOnline • Instant Transfer / DuitNow'],
-                                ['value' => 'Bank Islam', 'label' => 'Bank Islam Malaysia Berhad', 'sub' => 'BIMB • Instant Transfer / DuitNow'],
-                                ['value' => 'Bank Muamalat', 'label' => 'Bank Muamalat Malaysia Berhad', 'sub' => 'i-Muamalat • Instant Transfer / DuitNow'],
-                                ['value' => 'Affin Bank', 'label' => 'Affin Bank Berhad', 'sub' => 'Affin Always • Instant Transfer / DuitNow'],
-                                ['value' => 'Alliance Bank', 'label' => 'Alliance Bank Malaysia Berhad', 'sub' => 'allianceonline • Instant Transfer / DuitNow'],
-                                ['value' => 'Standard Chartered', 'label' => 'Standard Chartered Bank', 'sub' => 'StanChart MY • Instant Transfer / DuitNow'],
-                                ['value' => 'HSBC Bank', 'label' => 'HSBC Bank Malaysia Berhad', 'sub' => 'HSBC Online • Instant Transfer / DuitNow'],
-                                ['value' => 'OCBC Bank', 'label' => 'OCBC Bank (Malaysia) Berhad', 'sub' => 'OCBC Online • Instant Transfer / DuitNow'],
-                                ['value' => 'UOB Bank', 'label' => 'United Overseas Bank (Malaysia)', 'sub' => 'UOB TMRW • Instant Transfer / DuitNow'],
-                            ];
+                            if (isset($banks) && $banks->isNotEmpty()) {
+                                $bankOptions = $banks->map(function($b) {
+                                    return [
+                                        'value' => $b->short_name,
+                                        'label' => $b->bank_name,
+                                        'sub' => $b->short_name . ' • ' . ($b->swift_code ? $b->swift_code . ' • ' : '') . 'Instant Transfer / DuitNow',
+                                    ];
+                                })->toArray();
+                            } else {
+                                $bankOptions = [
+                                    ['value' => 'Maybank', 'label' => 'Malayan Banking Berhad', 'sub' => 'Maybank • Instant Transfer / DuitNow'],
+                                    ['value' => 'CIMB Bank', 'label' => 'CIMB Bank Berhad', 'sub' => 'CIMB Clicks • Instant Transfer / DuitNow'],
+                                    ['value' => 'Public Bank', 'label' => 'Public Bank Berhad', 'sub' => 'PBe • Instant Transfer / DuitNow'],
+                                    ['value' => 'RHB Bank', 'label' => 'RHB Bank Berhad', 'sub' => 'RHB Now • Instant Transfer / DuitNow'],
+                                    ['value' => 'Hong Leong Bank', 'label' => 'Hong Leong Bank Berhad', 'sub' => 'HLB Connect • Instant Transfer / DuitNow'],
+                                    ['value' => 'AmBank', 'label' => 'AmBank (M) Berhad', 'sub' => 'AmOnline • Instant Transfer / DuitNow'],
+                                    ['value' => 'Bank Islam', 'label' => 'Bank Islam Malaysia Berhad', 'sub' => 'BIMB • Instant Transfer / DuitNow'],
+                                ];
+                            }
                             @endphp
 
                             <x-ui.searchable-select

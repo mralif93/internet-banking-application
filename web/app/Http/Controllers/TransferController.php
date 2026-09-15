@@ -23,8 +23,9 @@ class TransferController extends Controller
         $account = $customer->accounts()->where('status', 'active')->first();
         $beneficiaries = $customer->beneficiaries()->orderBy('is_favorite', 'desc')->get();
         $limit = $customer->limits()->where('limit_type', 'duitnow')->first();
+        $banks = \App\Models\Bank::active()->get();
 
-        return view('customer.transfer', compact('customer', 'account', 'beneficiaries', 'limit'));
+        return view('customer.transfer', compact('customer', 'account', 'beneficiaries', 'limit', 'banks'));
     }
 
     public function submit(Request $request)
