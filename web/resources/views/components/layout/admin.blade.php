@@ -412,17 +412,17 @@
             </div>
         </aside>
 
-        <!-- MAIN VIEWPORT CONTENT -->
-        <div class="flex-1 flex flex-col min-w-0">
-            <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-7 pb-24 md:pb-10">
+        <!-- MAIN VIEWPORT CONTENT (Full Width Enterprise Layout) -->
+        <div class="flex-1 flex flex-col min-w-0 w-full">
+            <main class="flex-1 w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-5 sm:py-7 pb-24 md:pb-10">
                 {{ $slot }}
             </main>
 
             <!-- ======================================================================
-                 3. HIGH-SECURITY ENTERPRISE FOOTER
+                 3. HIGH-SECURITY ENTERPRISE FOOTER (Full Width)
                  ====================================================================== -->
             <footer class="mt-auto border-t border-slate-200 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md text-slate-500 dark:text-slate-400 text-xs py-5 transition-colors">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
+                <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-10 space-y-3">
                     <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left text-[11px]">
                         <!-- Left Status & Entity -->
                         <div class="flex items-center gap-2 flex-wrap justify-center md:justify-start">
