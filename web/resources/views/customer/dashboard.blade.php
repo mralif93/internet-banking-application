@@ -14,6 +14,31 @@ $customer = Auth::guard('customer')->user() ?? (object)[
 
     <div class="space-y-6 sm:space-y-8">
 
+        @php
+            $sysParamService = app(\App\Services\SystemParameterService::class);
+            $isMaintenance = $sysParamService->isMaintenanceMode();
+            $noticeMessage = $sysParamService->get('maintenance_banner_message');
+        @endphp
+
+        @if($isMaintenance || !empty($noticeMessage))
+            <div class="p-3.5 sm:p-4 rounded-2xl {{ $isMaintenance ? 'bg-amber-500/10 border-amber-500/30 text-amber-900 dark:text-amber-200' : 'bg-blue-500/10 border-blue-500/30 text-blue-900 dark:text-blue-200' }} border flex items-center justify-between gap-3 animate__animated animate__fadeIn">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl {{ $isMaintenance ? 'bg-amber-500 text-white' : 'bg-blue-500 text-white' }} flex items-center justify-center shrink-0 shadow-xs">
+                        <i data-lucide="{{ $isMaintenance ? 'alert-triangle' : 'info' }}" class="w-4 h-4"></i>
+                    </div>
+                    <div class="text-xs">
+                        <span class="font-bold {{ $isMaintenance ? 'text-amber-700 dark:text-amber-300' : 'text-blue-700 dark:text-blue-300' }} uppercase tracking-wider text-[10px]">
+                            {{ $isMaintenance ? 'Scheduled Maintenance Notice' : 'Bank Advisory' }}
+                        </span>
+                        <p class="font-medium mt-0.5 leading-relaxed">{{ $noticeMessage }}</p>
+                    </div>
+                </div>
+                <div class="text-[10px] font-mono shrink-0 hidden sm:block">
+                    24/7 Hotline: 997
+                </div>
+            </div>
+        @endif
+
         <!-- DASHBOARD PAGE HEADER (Simple, Clean, Adaptive for All Devices) -->
         <div class="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl p-4 sm:p-5 lg:p-6 border border-slate-200/80 dark:border-slate-800 shadow-xs animate__animated animate__fadeInDown animate__faster">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4">

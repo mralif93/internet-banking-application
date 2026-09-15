@@ -14,14 +14,22 @@ class TransferService
 {
     public function __construct(
         protected LedgerService $ledgerService,
-        protected TransactionLimitService $limitService
-    ) {}
+        protected TransactionLimitService $limitService,
+        protected ?SystemParameterService $parameterService = null
+    ) {
+        $this->parameterService = $parameterService ?? app(SystemParameterService::class);
+    }
 
     /**
      * Execute a DuitNow or Interbank funds transfer.
      */
     public function executeTransfer(Customer $sender, array $data): array
     {
+        // 0. Verify DuitNow Rail Circuit Breaker
+        if (!$this->parameterService->isDuitNowRailActive()) {
+            throw new Exception("PayNet DuitNow Clearing Rail is temporarily suspended by BankFlow Network Operations.");
+        }
+
         $amount = (float) $data['amount'];
         $sourceAccountId = $data['source_account_id'] ?? null;
 
@@ -37,11 +45,12 @@ class TransferService
             throw new Exception("Transfer exceeds your daily DuitNow limit. Remaining limit: RM " . number_format($remaining, 2));
         }
 
-        // 3. Check BNM Cooling-off requirement
-        // If amount >= 1000 and payee is not an established favorite or is newly added within 12h
-        $isHighRisk = ($amount >= 1000.00 && empty($data['is_trusted_payee']));
+        // 3. Check BNM Cooling-off requirement dynamically from System Parameters
+        $coolingThreshold = $this->parameterService->getCoolingOffThreshold();
+        $coolingHours = $this->parameterService->getCoolingOffHours();
+        $isHighRisk = ($amount >= $coolingThreshold && empty($data['is_trusted_payee']));
         $status = $isHighRisk ? 'cooling_off' : 'completed';
-        $coolingOffUntil = $isHighRisk ? Carbon::now()->addHours(12) : null;
+        $coolingOffUntil = $isHighRisk ? Carbon::now()->addHours($coolingHours) : null;
 
         $reference = LedgerService::generateReference('DN');
 

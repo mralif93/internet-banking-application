@@ -301,5 +301,110 @@ class DatabaseSeeder extends Seeder
                 $t
             );
         }
+
+        // 7. System Parameters for Admin Control
+        $parameters = [
+            // Cooling-off & Security
+            [
+                'category' => 'cooling_off',
+                'param_key' => 'cooling_off_period_hours',
+                'param_value' => '12',
+                'value_type' => 'integer',
+                'display_name' => 'BNM Cooling-Off Duration (Hours)',
+                'description' => 'Mandatory delay before newly bound devices or limit upgrades take effect (BNM RMiT standard: 12 hours).',
+                'updated_by' => 'System Initializer',
+            ],
+            [
+                'category' => 'cooling_off',
+                'param_key' => 'cooling_off_threshold_amount',
+                'param_value' => '1000.00',
+                'value_type' => 'decimal',
+                'display_name' => 'High-Value Hold Threshold (MYR)',
+                'description' => 'Transfer amounts to first-time payees exceeding this value require cooling-off or biometric step-up.',
+                'updated_by' => 'System Initializer',
+            ],
+            [
+                'category' => 'cooling_off',
+                'param_key' => 'enforce_biometric_step_up',
+                'param_value' => '1',
+                'value_type' => 'boolean',
+                'display_name' => 'Enforce Mobile Secure Enclave / Soft Token 2FA',
+                'description' => 'Strictly enforce hardware biometric enclave authorization for transactions >= RM 500.',
+                'updated_by' => 'System Initializer',
+            ],
+            // Payment Rails Status
+            [
+                'category' => 'payment_rails',
+                'param_key' => 'duitnow_rail_active',
+                'param_value' => '1',
+                'value_type' => 'boolean',
+                'display_name' => 'PayNet DuitNow Instant Rail',
+                'description' => 'Master switch for ISO 20022 DuitNow interbank real-time retail payments clearing.',
+                'updated_by' => 'System Initializer',
+            ],
+            [
+                'category' => 'payment_rails',
+                'param_key' => 'duitnow_qr_rail_active',
+                'param_value' => '1',
+                'value_type' => 'boolean',
+                'display_name' => 'PayNet DuitNow QR Interoperable Rail',
+                'description' => 'Enables national interoperable merchant QR scanning and dynamic peer QR generation.',
+                'updated_by' => 'System Initializer',
+            ],
+            [
+                'category' => 'payment_rails',
+                'param_key' => 'jompay_rail_active',
+                'param_value' => '1',
+                'value_type' => 'boolean',
+                'display_name' => 'JomPAY National Bill Payment Gateway',
+                'description' => 'Biller settlement network for utility, telco, municipal, and educational billers.',
+                'updated_by' => 'System Initializer',
+            ],
+            // Limit Caps
+            [
+                'category' => 'limit_caps',
+                'param_key' => 'max_system_transfer_limit',
+                'param_value' => '50000.00',
+                'value_type' => 'decimal',
+                'display_name' => 'Universal Maximum Daily Transfer Ceiling (MYR)',
+                'description' => 'Absolute maximum daily transfer limit allowed across retail consumer tier accounts.',
+                'updated_by' => 'System Initializer',
+            ],
+            [
+                'category' => 'limit_caps',
+                'param_key' => 'max_qr_single_transaction_limit',
+                'param_value' => '3000.00',
+                'value_type' => 'decimal',
+                'display_name' => 'DuitNow QR Single Transaction Cap (MYR)',
+                'description' => 'Maximum allowed per individual merchant QR transaction.',
+                'updated_by' => 'System Initializer',
+            ],
+            // Maintenance Mode
+            [
+                'category' => 'maintenance',
+                'param_key' => 'maintenance_mode_active',
+                'param_value' => '0',
+                'value_type' => 'boolean',
+                'display_name' => 'Global Retail Platform Maintenance Mode',
+                'description' => 'When active, customer portal displays scheduled maintenance banner with emergency contacts.',
+                'updated_by' => 'System Initializer',
+            ],
+            [
+                'category' => 'maintenance',
+                'param_key' => 'maintenance_banner_message',
+                'param_value' => 'Scheduled System Optimization: All services operational. 24/7 fraud hotline 997 is standby.',
+                'value_type' => 'string',
+                'display_name' => 'Customer Broadcast Notice',
+                'description' => 'High-priority advisory message displayed across customer dashboard headers.',
+                'updated_by' => 'System Initializer',
+            ],
+        ];
+
+        foreach ($parameters as $param) {
+            \App\Models\SystemParameter::updateOrCreate(
+                ['param_key' => $param['param_key']],
+                $param
+            );
+        }
     }
 }

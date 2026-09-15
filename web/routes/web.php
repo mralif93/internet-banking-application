@@ -79,9 +79,23 @@ Route::get('/staff', function () {
     return view('staff');
 })->name('staff');
 
-Route::get('/admin', function () {
-    return view('admin');
-})->name('admin');
+// Admin Portal Routes
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    
+    // System Parameters
+    Route::get('/parameters', [\App\Http\Controllers\Admin\ParameterController::class, 'index'])->name('parameters');
+    Route::post('/parameters', [\App\Http\Controllers\Admin\ParameterController::class, 'update'])->name('parameters.update');
+    Route::post('/parameters/biller', [\App\Http\Controllers\Admin\ParameterController::class, 'storeBiller'])->name('parameters.biller.store');
+    Route::post('/parameters/biller/{id}/toggle', [\App\Http\Controllers\Admin\ParameterController::class, 'toggleBiller'])->name('parameters.biller.toggle');
+
+    // Customer Account Controls
+    Route::get('/customers', [\App\Http\Controllers\Admin\CustomerManagementController::class, 'index'])->name('customers');
+    Route::post('/customers/{id}/toggle-status', [\App\Http\Controllers\Admin\CustomerManagementController::class, 'toggleStatus'])->name('customers.toggle-status');
+
+    // Immutable Audit Trail
+    Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs');
+});
 
 Route::get('/ui-kit', function () {
     return view('ui-kit');

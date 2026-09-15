@@ -1,6 +1,6 @@
 @props([
     'title' => 'BankFlow MY — Enterprise Admin & Fraud Operations Center',
-    'activeNav' => 'dashboard',
+    'activeNav' => 'parameters',
 ])
 
 <!DOCTYPE html>
@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#991b1b">
-    <meta name="description" content="BankFlow MY Admin & Fraud Security Center - Real-time AML/CFT monitoring, Kill Switch circuit breaker, and security compliance telemetry.">
+    <meta name="description" content="BankFlow MY Admin & Fraud Security Center - Real-time AML/CFT monitoring, Parameter Management, Kill Switch circuit breaker, and security compliance telemetry.">
     <title>{{ $title }}</title>
 
     <!-- Theme hydration -->
@@ -32,7 +32,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="h-full bg-slate-100/70 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased transition-colors duration-200 flex flex-col min-h-screen selection:bg-rose-600 selection:text-white">
+<body class="h-full bg-slate-100/75 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased transition-colors duration-200 flex flex-col min-h-screen selection:bg-rose-600 selection:text-white">
 
     <!-- Admin Top High-Security Navigation Bar -->
     <header class="sticky top-0 z-30 w-full bg-slate-900 text-white border-b border-slate-800 shadow-md">
@@ -46,47 +46,52 @@
                         class="md:hidden p-2 rounded-xl text-slate-300 hover:bg-slate-800"
                         aria-label="Open admin drawer"
                     >
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                        </svg>
+                        <i data-lucide="menu" class="w-5 h-5"></i>
                     </button>
 
-                    <a href="/admin" class="flex items-center gap-2.5">
-                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-600 to-red-700 flex items-center justify-center text-white font-bold text-sm shadow-sm">
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                            </svg>
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-600 to-red-700 flex items-center justify-center text-white font-bold text-sm shadow-sm shadow-rose-900/30">
+                            <i data-lucide="shield-alert" class="w-5 h-5"></i>
                         </div>
                         <div>
                             <span class="font-bold text-base tracking-tight text-white flex items-center gap-1.5">
-                                BankFlow <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">Admin Center</span>
+                                BankFlow <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">Admin Portal</span>
                             </span>
                         </div>
                     </a>
                 </div>
 
                 <!-- Desktop Admin Navigation -->
-                <nav class="hidden md:flex items-center gap-1">
-                    <a href="/admin" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium {{ $activeNav === 'fraud' ? 'bg-rose-950/80 text-rose-300 border border-rose-800/80 font-semibold' : 'text-slate-300 hover:bg-slate-800' }}">
-                        AML / Fraud Radar
+                <nav class="hidden md:flex items-center gap-1.5">
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all {{ $activeNav === 'fraud' ? 'bg-rose-950/80 text-rose-300 border border-rose-800/80' : 'text-slate-300 hover:bg-slate-800/80 hover:text-white' }}">
+                        <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+                        AML Radar
                     </a>
-                    <a href="#kill-switches" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium {{ $activeNav === 'kill' ? 'bg-rose-950/80 text-rose-300 border border-rose-800/80 font-semibold' : 'text-slate-300 hover:bg-slate-800' }}">
-                        Kill Switch Triggers
+                    <a href="{{ route('admin.parameters') }}" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all {{ $activeNav === 'parameters' ? 'bg-rose-950/80 text-rose-300 border border-rose-800/80' : 'text-slate-300 hover:bg-slate-800/80 hover:text-white' }}">
+                        <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
+                        System Parameters
                     </a>
-                    <a href="#audit-vault" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium {{ $activeNav === 'audit' ? 'bg-rose-950/80 text-rose-300 border border-rose-800/80 font-semibold' : 'text-slate-300 hover:bg-slate-800' }}">
-                        WORM Audit Logs
+                    <a href="{{ route('admin.customers') }}" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all {{ $activeNav === 'customers' ? 'bg-rose-950/80 text-rose-300 border border-rose-800/80' : 'text-slate-300 hover:bg-slate-800/80 hover:text-white' }}">
+                        <i data-lucide="users" class="w-3.5 h-3.5"></i>
+                        Customer Accounts
                     </a>
-                    <a href="/" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-emerald-400 transition-colors">
-                        &larr; Public View
+                    <a href="{{ route('admin.audit-logs') }}" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all {{ $activeNav === 'audit' ? 'bg-rose-950/80 text-rose-300 border border-rose-800/80' : 'text-slate-300 hover:bg-slate-800/80 hover:text-white' }}">
+                        <i data-lucide="file-check" class="w-3.5 h-3.5"></i>
+                        Audit Logs
+                    </a>
+                    <span class="text-slate-700 dark:text-slate-700 px-1">|</span>
+                    <a href="{{ route('customer.dashboard') }}" class="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-emerald-400 hover:bg-slate-800/60 transition-all">
+                        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                        Customer Portal
                     </a>
                 </nav>
 
-                <!-- Right Actions: High-Security Indicators & Clearance Badge -->
-                <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Right Actions: Security Clearance & Admin Profile -->
+                <div class="flex items-center gap-2.5">
                     <x-ui.dark-toggle class="border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700" />
 
-                    <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-950/80 border border-rose-800 text-rose-300 text-xs font-semibold">
-                        <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+                    <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-950/80 border border-rose-800 text-rose-300 text-xs font-semibold shadow-2xs">
+                        <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
                         DEFCON: NORMAL
                     </div>
 
@@ -117,19 +122,47 @@
     >
         <div class="space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                <span class="font-bold text-sm text-white">Admin Operations Menu</span>
-                <button type="button" onclick="window.toggleMobileDrawer()" class="p-1 rounded-lg text-slate-400">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-rose-600 flex items-center justify-center text-white">
+                        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                    </div>
+                    <span class="font-bold text-sm text-white">Admin Operations</span>
+                </div>
+                <button type="button" onclick="window.toggleMobileDrawer()" class="p-1 rounded-lg text-slate-400 hover:text-white cursor-pointer">
+                    <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
-            <ul class="space-y-1 text-sm font-medium">
-                <li><a href="/admin" class="block px-3 py-2 rounded-xl bg-rose-950 text-rose-300">AML / Fraud Radar</a></li>
-                <li><a href="#kill-switches" class="block px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800">Kill Switch Triggers</a></li>
-                <li><a href="#audit-vault" class="block px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800">WORM Audit Logs</a></li>
-                <li><a href="/staff" class="block px-3 py-2 rounded-xl text-blue-400">Staff Service Desk &rarr;</a></li>
-                <li><a href="/" class="block px-3 py-2 rounded-xl text-emerald-400">&larr; Public Banking Portal</a></li>
+            <ul class="space-y-1.5 text-sm font-medium">
+                <li>
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2 px-3 py-2 rounded-xl {{ $activeNav === 'fraud' ? 'bg-rose-950 text-rose-300 font-bold border border-rose-800' : 'text-slate-300 hover:bg-slate-800' }}">
+                        <i data-lucide="activity" class="w-4 h-4"></i>
+                        AML Radar &amp; Telemetry
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.parameters') }}" class="flex items-center gap-2 px-3 py-2 rounded-xl {{ $activeNav === 'parameters' ? 'bg-rose-950 text-rose-300 font-bold border border-rose-800' : 'text-slate-300 hover:bg-slate-800' }}">
+                        <i data-lucide="sliders" class="w-4 h-4"></i>
+                        System Parameters
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.customers') }}" class="flex items-center gap-2 px-3 py-2 rounded-xl {{ $activeNav === 'customers' ? 'bg-rose-950 text-rose-300 font-bold border border-rose-800' : 'text-slate-300 hover:bg-slate-800' }}">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                        Customer Accounts
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.audit-logs') }}" class="flex items-center gap-2 px-3 py-2 rounded-xl {{ $activeNav === 'audit' ? 'bg-rose-950 text-rose-300 font-bold border border-rose-800' : 'text-slate-300 hover:bg-slate-800' }}">
+                        <i data-lucide="file-check" class="w-4 h-4"></i>
+                        Compliance Audit Trail
+                    </a>
+                </li>
+                <li class="pt-2 border-t border-slate-800">
+                    <a href="{{ route('customer.dashboard') }}" class="flex items-center gap-2 px-3 py-2 rounded-xl text-emerald-400 hover:bg-slate-800">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        Customer Portal &rarr;
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="pt-4 border-t border-slate-800">
@@ -148,7 +181,7 @@
     <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 text-slate-500 dark:text-slate-400 text-xs py-4">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left text-[11px]">
             <span>BankFlow MY Administrative Tier &bull; Access Level 4 Strict &bull; Immutable Audit Active</span>
-            <span class="font-mono">IP: 10.142.8.29 (VPN Gateway)</span>
+            <span class="font-mono">IP: 10.142.8.29 (VPN Gateway) &bull; BNM RMiT Compliant</span>
         </div>
     </footer>
 

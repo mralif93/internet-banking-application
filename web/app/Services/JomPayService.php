@@ -11,15 +11,18 @@ class JomPayService
 {
     public function __construct(
         protected LedgerService $ledgerService,
-        protected TransactionLimitService $limitService
-    ) {}
+        protected TransactionLimitService $limitService,
+        protected ?SystemParameterService $parameterService = null
+    ) {
+        $this->parameterService = $parameterService ?? app(SystemParameterService::class);
+    }
 
     /**
      * Validate a JomPAY biller code.
      */
     public function validateBiller(string $billerCode): ?JompayBiller
     {
-        return JompayBiller::where('biller_code', trim($billerCode))->first();
+        return JompayBiller::where('biller_code', trim($billerCode))->where('is_active', true)->first();
     }
 
     /**
@@ -27,6 +30,10 @@ class JomPayService
      */
     public function payBill(Customer $customer, array $data): array
     {
+        if (!$this->parameterService->isJompayRailActive()) {
+            throw new Exception("JomPAY Settlement Gateway is temporarily offline for maintenance.");
+        }
+
         $amount = (float) $data['amount'];
         $billerCode = trim($data['biller_code']);
         $ref1 = trim($data['ref_1']);
@@ -34,7 +41,7 @@ class JomPayService
 
         $biller = $this->validateBiller($billerCode);
         if (!$biller) {
-            throw new Exception("Invalid JomPAY Biller Code ({$billerCode}). Please verify with your bill invoice.");
+            throw new Exception("Invalid or inactive JomPAY Biller Code ({$billerCode}). Please verify with your bill invoice.");
         }
 
         if ($biller->is_ref_2_required && empty($ref2)) {
