@@ -34,6 +34,9 @@ $firstName = explode(' ', $customerName)[0];
 
                 const storedColor = localStorage.getItem('app-color-theme') || 'emerald';
                 document.documentElement.setAttribute('data-color-theme', storedColor);
+
+                const storedFontSize = localStorage.getItem('app-font-size') || 'standard';
+                document.documentElement.setAttribute('data-font-size', storedFontSize);
                 
                 const metaThemeColorMap = {
                     emerald: '#059669',

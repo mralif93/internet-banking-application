@@ -657,6 +657,41 @@ $customer = Auth::guard('customer')->user() ?? (object)[
                             </div>
                         </div>
 
+                        {{-- Global Font Size / Display Scale Accessibility Selector --}}
+                        <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 font-sans tracking-tight">
+                                    Display Font Size &amp; Scale
+                                </label>
+                                <span id="current-font-size-label" class="text-xs font-bold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-sans">
+                                    Standard (15px)
+                                </span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2" id="font-size-picker-group">
+                                <!-- Compact -->
+                                <button type="button" id="font-btn-compact" onclick="window.selectFontSize('compact')"
+                                        class="p-2.5 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-emerald-300 transition-all cursor-pointer text-center group">
+                                    <span class="block text-xs font-black text-slate-700 dark:text-slate-300">A</span>
+                                    <p class="text-[11px] font-bold text-slate-600 dark:text-slate-400 mt-1">Compact</p>
+                                    <p class="text-[10px] text-slate-400">14px</p>
+                                </button>
+                                <!-- Standard -->
+                                <button type="button" id="font-btn-standard" onclick="window.selectFontSize('standard')"
+                                        class="p-2.5 rounded-2xl border-2 border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 transition-all cursor-pointer text-center group">
+                                    <span class="block text-sm font-black text-emerald-700 dark:text-emerald-300">A</span>
+                                    <p class="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 mt-1">Standard</p>
+                                    <p class="text-[10px] text-emerald-600/70 dark:text-emerald-400/70">15px (Default)</p>
+                                </button>
+                                <!-- Large / Comfortable -->
+                                <button type="button" id="font-btn-large" onclick="window.selectFontSize('large')"
+                                        class="p-2.5 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-emerald-300 transition-all cursor-pointer text-center group">
+                                    <span class="block text-base font-black text-slate-700 dark:text-slate-300">A</span>
+                                    <p class="text-[11px] font-bold text-slate-600 dark:text-slate-400 mt-1">Large</p>
+                                    <p class="text-[10px] text-slate-400">16.5px (Senior)</p>
+                                </button>
+                            </div>
+                        </div>
+
                         <div>
                             <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 font-sans tracking-tight">Language</label>
                             <select class="w-full py-2.5 sm:py-3 px-3.5 sm:px-4 text-xs sm:text-sm font-semibold rounded-2xl border border-slate-300/90 dark:border-slate-700 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:outline-none text-slate-900 dark:text-slate-100 font-sans shadow-2xs transition-all">
@@ -1245,13 +1280,57 @@ $customer = Auth::guard('customer')->user() ?? (object)[
             if (window.lucide) window.lucide.createIcons();
         };
 
-        // Initialize display theme & color theme state on load
+        // ─── Font Size Scale ───────────────────────────────────────────────
+        const fontSizeLabels = {
+            compact:  'Compact (14px)',
+            standard: 'Standard (15px)',
+            large:    'Large (16.5px)'
+        };
+
+        window.selectFontSize = function(size) {
+            if (!fontSizeLabels[size]) size = 'standard';
+
+            document.documentElement.setAttribute('data-font-size', size);
+            localStorage.setItem('app-font-size', size);
+
+            const labelEl = document.getElementById('current-font-size-label');
+            if (labelEl) {
+                labelEl.textContent = fontSizeLabels[size];
+            }
+
+            ['compact', 'standard', 'large'].forEach(function(s) {
+                const btn = document.getElementById('font-btn-' + s);
+                if (!btn) return;
+                const letter = btn.querySelector('span');
+                const pTitle = btn.querySelector('p:nth-of-type(1)');
+                const pSub   = btn.querySelector('p:nth-of-type(2)');
+
+                if (s === size) {
+                    btn.classList.remove('border-slate-200', 'dark:border-slate-700');
+                    btn.classList.add('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/30');
+                    if (letter) { letter.classList.remove('text-slate-700', 'dark:text-slate-300'); letter.classList.add('text-emerald-700', 'dark:text-emerald-300'); }
+                    if (pTitle) { pTitle.classList.remove('text-slate-600', 'dark:text-slate-400'); pTitle.classList.add('text-emerald-700', 'dark:text-emerald-300'); }
+                    if (pSub)   { pSub.classList.remove('text-slate-400'); pSub.classList.add('text-emerald-600/70', 'dark:text-emerald-400/70'); }
+                } else {
+                    btn.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/30');
+                    btn.classList.add('border-slate-200', 'dark:border-slate-700');
+                    if (letter) { letter.classList.remove('text-emerald-700', 'dark:text-emerald-300'); letter.classList.add('text-slate-700', 'dark:text-slate-300'); }
+                    if (pTitle) { pTitle.classList.remove('text-emerald-700', 'dark:text-emerald-300'); pTitle.classList.add('text-slate-600', 'dark:text-slate-400'); }
+                    if (pSub)   { pSub.classList.remove('text-emerald-600/70', 'dark:text-emerald-400/70'); pSub.classList.add('text-slate-400'); }
+                }
+            });
+        };
+
+        // Initialize display theme, color theme & font size state on load
         (function initThemes() {
             const currentTheme = localStorage.getItem('theme') || 'system';
             window.selectTheme(currentTheme);
 
             const currentColor = localStorage.getItem('app-color-theme') || 'emerald';
             window.selectColorTheme(currentColor);
+
+            const currentFontSize = localStorage.getItem('app-font-size') || 'standard';
+            window.selectFontSize(currentFontSize);
         })();
 
         // ─── Modals ─────────────────────────────────────────────────────
